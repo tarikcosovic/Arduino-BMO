@@ -41,3 +41,21 @@ MCUFRIEND_kbv tft;
 //GLOBAL CONSTANTS DEFINITIONS
 const int screenWidth = tft.height();
 const int screenHeight = tft.width();
+
+//ButtonPins and States
+const int LeftButton = 2;
+int LeftButtonState = 0;
+
+const int RightButton = 3;
+int RightButtonState = 0;
+
+
+//-----------------------------------------
+//GLOBAL FUNCTION FOR CALCULATING DELTA TIME
+unsigned int oldTime = 0;
+unsigned int CalculateDeltaTime(){
+  int currentTime = millis();
+  int deltaTime = currentTime - oldTime;
+  oldTime = currentTime;
+  return deltaTime;
+}

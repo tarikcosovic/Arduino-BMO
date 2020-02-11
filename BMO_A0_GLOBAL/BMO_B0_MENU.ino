@@ -1,6 +1,6 @@
 void MainMenu()
 {
-  StarWarsUI();
+  gameSelectUI[currentGameUI]("none");
 }
 
 //---------------------------------
@@ -8,10 +8,19 @@ void MainMenu()
 //x1,y1 - position of title
 //x2,y2 - position of subtitle
 //title, subtitle, color
-void GameTitleUI(int x1, int y1, int x2, int  y2, String title, String subtitle, uint16_t color)
+void GameTitleUI(int x1, int y1, int x2, int  y2, String title, String subtitle, uint16_t color, String swipeDirection)
 {
-  tft.setRotation(2);
-  tft.fillScreen(BLACK);
+  if(swipeDirection == "right")
+  {
+    tft.setRotation(2);
+    tft.fillScreen(BLACK);
+  }
+  else if(swipeDirection == "left")
+  {
+    tft.setRotation(0);
+    tft.fillScreen(BLACK);
+  }
+  
   tft.setRotation(1);
   tft.fillScreen(BLACK);
 
@@ -27,45 +36,48 @@ void GameTitleUI(int x1, int y1, int x2, int  y2, String title, String subtitle,
 //PressAnyButtonUI - blinking indicator
 void PressAnyButtonUI(uint16_t color)
 {
+  tft.drawTriangle(screenWidth - 86, screenHeight - 27, screenWidth - 96, screenHeight - 22, screenWidth - 96, screenHeight - 32, color);
+  tft.drawTriangle(screenWidth / 2 - 100, screenHeight - 27, screenWidth / 2 - 90, screenHeight - 22, screenWidth / 2 - 90, screenHeight - 32, color);
+
   tft.setTextSize(1);
+  
+  unsigned int counter = 0;
   while (true)
   {
-    TakeInput(); 
+    CheckInputs();
+
+    counter += CalculateDeltaTime();
     
-    tft.setTextColor(color);
-    tft.setCursor(screenWidth / 2 - 67, screenHeight - 30);
-    tft.print("PRESS ANY BUTTON TO START");
+    if(counter < 500)
+    {
+      tft.setTextColor(color);
+      tft.setCursor(screenWidth / 2 - 67, screenHeight - 30);
+      tft.print("PRESS ANY BUTTON TO START");
 
-    tft.drawTriangle(screenWidth - 86, screenHeight - 27, screenWidth - 96, screenHeight - 22, screenWidth - 96, screenHeight - 32, color);
-    tft.drawTriangle(screenWidth / 2 - 100, screenHeight - 27, screenWidth / 2 - 90, screenHeight - 22, screenWidth / 2 - 90, screenHeight - 32, color);
+    }
+    else
+    {
+      tft.setTextColor(BLACK);
+      tft.setCursor(screenWidth / 2 - 67, screenHeight - 30);
+      tft.print("PRESS ANY BUTTON TO START");
+      
+      if(counter > 900)
+        counter = 0;
+    }
 
-    delay(500);
-
-    tft.setTextColor(BLACK);
-    tft.setCursor(screenWidth / 2 - 67, screenHeight - 30);
-    tft.print("PRESS ANY BUTTON TO START");
-
-    delay(400);
   }
-}
-
-//------------------------------------------------------------------------------------
-//TakeInput - Chekcs for input regarding selecting the game or switching between games
-void TakeInput()
-{
-  
 }
 
 //------------------------------------
 //GAME TITLE: STAR WARS
 //GAME SUBTITLE: THE RETURN OF THE JEDI
-void StarWarsUI(int swipeDirection)
+void StarWarsUI(String swipeDirection)
 {
-  GameTitleUI(screenWidth / 2 - 50, screenHeight / 2 - 40, screenWidth / 2 - 125, screenHeight / 2 - 20, "Star Wars", "The Return of The Jedi", YELLOW);
+  GameTitleUI(screenWidth / 2 - 50, screenHeight / 2 - 40, screenWidth / 2 - 125, screenHeight / 2 - 20, "Star Wars", "The Return of The Jedi", YELLOW, swipeDirection);
 
   for (int i = 0; i < 80; i++) {
     tft.drawPixel(random(0, screenWidth), random(0, screenHeight), WHITE);
-    delay(30);
+    delay(20);
   }
   for (int i = 0; i < 10; i++)
     tft.drawCircle(random(0, screenWidth), random(0, screenHeight), random(0, 2), WHITE);
@@ -76,9 +88,9 @@ void StarWarsUI(int swipeDirection)
 //------------------------------------
 //GAME TITLE: THE MATRIX
 //GAME SUBTITLE: DEEP DIVE INTO REALITY
-void TheMatrixUI(int swipeDirection)
+void TheMatrixUI(String swipeDirection)
 {
-  GameTitleUI(screenWidth / 2 - 50, screenHeight / 2 - 40, screenWidth / 2 - 125, screenHeight / 2 - 20, "The Matrix", "Deep dive into reality", GREEN);
+  GameTitleUI(screenWidth / 2 - 50, screenHeight / 2 - 40, screenWidth / 2 - 125, screenHeight / 2 - 20, "The Matrix", "Deep dive into reality", GREEN, swipeDirection);
 
   tft.setTextSize(0);
   tft.setTextColor(0x0500);
