@@ -2,7 +2,7 @@ uint16_t g_identifier;
 
 void setup(void) {
 
-  //Serial. begin(9600); //For Debugging
+  Serial. begin(9600); //For Debugging
   
   //BUTTON PINS
   pinMode(LeftButton, INPUT);     //LeftButton
@@ -13,6 +13,7 @@ void setup(void) {
   tft.begin(g_identifier);
   tft.setRotation(1); //Sets the screen rotation to horizontal
 
-  MainMenu();
+  //MainMenu();
+  StartSnake();
 
 }

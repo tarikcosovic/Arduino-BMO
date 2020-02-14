@@ -45,3 +45,23 @@ int CalculateCurrentGameUI(String swipeDirection)
 
   gameSelectUI[currentGameUI](swipeDirection);
 }
+
+
+
+//-------------------------------
+//SNAKE GAME INPUTS
+int SnakeCheckInput()
+{
+  LeftButtonState = digitalRead(LeftButton);
+  RightButtonState = digitalRead(RightButton);
+
+  if (LeftButtonState == HIGH)
+  {
+    return 2;
+  }
+  else if (RightButtonState == HIGH)
+  {
+    return 3;
+  }
+  return 10;
+}

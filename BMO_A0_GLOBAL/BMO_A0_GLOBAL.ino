@@ -1,6 +1,8 @@
 #include <Adafruit_GFX.h>    // Core graphics library
 //#include <Adafruit_TFTLCD.h> // Hardware-specific library
 #include <MCUFRIEND_kbv.h>
+#include <Vector.h>
+#include<BMO_gfx.h>
 
 // TFT Breakout  -- Arduino Mega2560
 // GND              -- GND
