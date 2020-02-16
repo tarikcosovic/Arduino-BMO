@@ -1,38 +1,28 @@
-BodyPart food(random(10, screenWidth - 10), random(10, screenHeight -10)); //Spawning the initial food
-int movementDirection = -1; //Starting movementDirection 
+BodyPart food(200, 120); //Spawning the initial food
+String movementDirection = UP; //Starting movementDirection 
 bool isRunning = true;
 int score = 0;
 
- 
 void UpdateSnakePositions(Vector<BodyPart> &Snake, bool eaten = false);
 
 void StartSnake()
 {
+  tft.fillScreen(BLACK);
   Vector<BodyPart> Snake;
-  Snake.clear();
+  Snake.Clear();
   score = 0;
 
   BodyPart temp(screenWidth/2, 200); //Starting position of snake
-  Snake.push_back(temp);
+  Snake.PushBack(temp);
 
-  Serial.println(Snake[0].positionX);
-  Serial.println(Snake[0].positionY);
-  Serial.println(temp.positionX);
-  Serial.println(screenWidth);
-  Serial.println(Snake[0].GetPositionX());
-  Serial.println(Snake[0].GetPositionY());
-  Serial.println("random");
-  Serial.println(Snake[0].positionX);
-  
-
-  unsigned int gameSpeed = 700;  //Setting the game speed
+  unsigned int gameSpeed = 300;  //Setting the game speed
   unsigned int timer = 0;
 
   while(isRunning)
   {
     //Checking for input
-    int tempVal = SnakeCheckInput();
-    movementDirection = tempVal != 10?tempVal:movementDirection; //If no input, keep the previous movementDirection
+    String tempVal = CheckInputs();
+    movementDirection = tempVal != NONE?tempVal:movementDirection; //If no input, keep the previous movementDirection
     
     timer += CalculateDeltaTime();
     if(timer > gameSpeed)
@@ -53,7 +43,7 @@ void UpdateGameLogic(Vector<BodyPart> &Snake)
 {
   //Collision Checks
 
-  for(int i = 3; i < Snake.size() - 1; i++) //If collided with itself
+  for(int i = 3; i < Snake.Size() - 1; i++) //If collided with itself
   {
     if(Snake[0].positionX == Snake[i].positionX && Snake[0].positionY == Snake[i].positionY)
     {
@@ -82,42 +72,33 @@ void UpdateGameLogic(Vector<BodyPart> &Snake)
 
 void UpdateSnakePositions(Vector<BodyPart> &Snake, bool eaten = false)
 {
-  for(int i = Snake.size() - 1; i > 0; i--)
+  for(int i = Snake.Size() - 1; i > 0; i--)
   {
     Snake[i].positionX = Snake[i - 1].positionX;
     Snake[i].positionY = Snake[i - 1].positionY;
   }
-  
-  switch(movementDirection)
-  {
-    case -1:
-        Snake[0].positionY--;
-      break;
-    case 1:
-        Snake[0].positionY++;
-      break;
-    case 2:
-        Snake[0].positionX--;
-      break;
-    case 3:
-        Snake[0].positionX++;
-      break;
-  }
+  //Draws the tail of the snake black and new position white
+  tft.drawPixel(Snake[Snake.Size() - 1].positionX, Snake[Snake.Size() - 1].positionY, BLACK);
+  //Updating the head of snake to next frame position
+  if(movementDirection == UP)
+    Snake[0].positionY--;
+  else if(movementDirection == DOWN)
+    Snake[0].positionY++;
+  else if(movementDirection == LEFT)
+    Snake[0].positionX--;
+  else if(movementDirection == RIGHT)
+    Snake[0].positionX++;
   
   if(eaten)
   {
-    BodyPart temp(Snake[Snake.size() - 1].positionX, Snake[Snake.size() - 1].positionY); // SPAWN ON THE POSITION OF THE LAST BODY PART AND WHEN THEY GET SHIFTED HE WILL STAY THE SAME OF LAST POS AND IGNORE THE SHIFT BECASUE HE'S THE LAST ONE
-    Snake.push_back(temp); //SPAWNA OD KRAjA ELEMENTE RADI JEDNOSTAVNOSTI U KODU
+    BodyPart temp(Snake[Snake.Size() - 1].positionX, Snake[Snake.Size() - 1].positionY);
+    Snake.PushBack(temp); 
   }
 }
 
 void RefreshDisplay(Vector<BodyPart> &Snake)
 {
-  tft.fillScreen(BLACK);
-  for(int i = 0; i < Snake.size() - 1; i++)
-  {
-    tft.drawPixel(Snake[i].positionX, Snake[i].positionY, GREEN);
-  }
+  tft.drawPixel(Snake[0].positionX, Snake[0].positionY, GREEN);
 
   tft.drawPixel(food.positionX, food.positionY, RED);
 }

@@ -52,6 +52,15 @@ const int RightButton = 3;
 int RightButtonState = 0;
 
 
+//Input Constants
+String LEFT = "left";
+String RIGHT = "right";
+String UP = "up";
+String DOWN = "down";
+String NONE = "none";
+
+
+
 //-----------------------------------------
 //GLOBAL FUNCTION FOR CALCULATING DELTA TIME
 unsigned int oldTime = 0;

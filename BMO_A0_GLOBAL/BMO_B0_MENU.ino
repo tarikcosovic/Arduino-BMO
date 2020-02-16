@@ -10,12 +10,12 @@ void MainMenu()
 //title, subtitle, color
 void GameTitleUI(int x1, int y1, int x2, int  y2, String title, String subtitle, uint16_t color, String swipeDirection)
 {
-  if(swipeDirection == "right")
+  if(swipeDirection == RIGHT)
   {
     tft.setRotation(2);
     tft.fillScreen(BLACK);
   }
-  else if(swipeDirection == "left")
+  else if(swipeDirection == LEFT)
   {
     tft.setRotation(0);
     tft.fillScreen(BLACK);
@@ -44,7 +44,7 @@ void PressAnyButtonUI(uint16_t color)
   unsigned int counter = 0;
   while (true)
   {
-    CheckInputs();
+    MainMenuInput();
 
     counter += CalculateDeltaTime();
     
@@ -66,6 +66,13 @@ void PressAnyButtonUI(uint16_t color)
     }
 
   }
+}
+
+void MainMenuInput()
+{
+  String buttonPressed = CheckInputs();
+
+  CalculateCurrentGameUI(buttonPressed);
 }
 
 //------------------------------------

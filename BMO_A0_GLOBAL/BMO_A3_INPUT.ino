@@ -2,24 +2,26 @@
 void (* gameSelectUI [2])(String) = {StarWarsUI, TheMatrixUI};
 int currentGameUI = 0;
 
-void CheckInputs()
+String CheckInputs()
 {
   LeftButtonState = digitalRead(LeftButton);
   RightButtonState = digitalRead(RightButton);
 
   if (LeftButtonState == HIGH)
   {
-    CalculateCurrentGameUI("left");
+    return LEFT;
   }
   else if (RightButtonState == HIGH)
   {
-    CalculateCurrentGameUI("right");
+    return RIGHT;
   }
+
+  return NONE;
 }
 
 int CalculateCurrentGameUI(String swipeDirection)
 {
-  if (swipeDirection.equals("left"))
+  if (swipeDirection.equals(LEFT))
   {
     if (currentGameUI <= 0)
     {
@@ -31,7 +33,7 @@ int CalculateCurrentGameUI(String swipeDirection)
     }
   }
 
-  if (swipeDirection.equals("right"))
+  if (swipeDirection.equals(RIGHT))
   {
     if (currentGameUI >= 1)
     {
@@ -42,26 +44,6 @@ int CalculateCurrentGameUI(String swipeDirection)
       currentGameUI++;
     }
   }
-
-  gameSelectUI[currentGameUI](swipeDirection);
-}
-
-
-
-//-------------------------------
-//SNAKE GAME INPUTS
-int SnakeCheckInput()
-{
-  LeftButtonState = digitalRead(LeftButton);
-  RightButtonState = digitalRead(RightButton);
-
-  if (LeftButtonState == HIGH)
-  {
-    return 2;
-  }
-  else if (RightButtonState == HIGH)
-  {
-    return 3;
-  }
-  return 10;
+  if(swipeDirection == LEFT || swipeDirection == RIGHT)
+    gameSelectUI[currentGameUI](swipeDirection);
 }
