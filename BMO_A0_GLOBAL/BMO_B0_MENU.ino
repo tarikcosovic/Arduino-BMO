@@ -128,3 +128,22 @@ void TheMatrixUI(String swipeDirection)
 
   PressAnyButtonUI(GREEN);
 }
+
+//------------------------------------
+//GAME TITLE: SNAKE
+//GAME SUBTITLE: 80s' retro classic
+void SnakeUI(String swipeDirection)
+{
+  GameTitleUI(screenWidth / 2 -  18, screenHeight / 2 - 65 , screenWidth / 2 - 68, screenHeight / 2 - 40, "Snake", "Retro classic", MAGENTA, swipeDirection);
+
+  for(int i = 0; i < 40; i++) {
+    tft.drawPixel(random(0, screenWidth), random(0, screenHeight), MAGENTA);
+    delay(20);
+    }
+  for (int i = 0; i < 10; i++)
+    tft.drawCircle(random(0, screenWidth), random(0, screenHeight), random(0, 2), MAGENTA);
+
+  tft.drawRect(130, 110, 160, 7, MAGENTA);
+
+  PressAnyButtonUI(MAGENTA);
+}

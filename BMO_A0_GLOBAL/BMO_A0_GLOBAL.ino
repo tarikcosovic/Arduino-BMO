@@ -51,6 +51,13 @@ int LeftButtonState = 0;
 const int RightButton = 3;
 int RightButtonState = 0;
 
+const int UpButton = 52;
+int UpButtonState = 0;
+
+const int DownButton = 53;
+int DownButtonState = 0;
+
+
 
 //Input Constants
 String LEFT = "left";
