@@ -5,6 +5,7 @@ void setup(void) {
   Serial. begin(9600); //For Debugging
   randomSeed(analogRead(5));
 
+  InitiateSDCard();
   
   //BUTTON PINS
   pinMode(LeftButton, INPUT);     //LeftButton
@@ -17,6 +18,15 @@ void setup(void) {
   tft.begin(g_identifier);
   tft.setRotation(1); //Sets the screen rotation to horizontal
 
-  MainMenu();
-  //StartSnake();
+  //MainMenu();
+  StartSnake();
+}
+
+void InitiateSDCard()
+{
+  pinMode(MicroSDPin, OUTPUT);
+
+  if (!SD.begin(MicroSDPin)) { // Initialize SD card
+    Serial.println("Could not initialize SD card."); // if return value is false, something went wrong.
+  }
 }

@@ -10,17 +10,17 @@ void MainMenu()
 //title, subtitle, color
 void GameTitleUI(int x1, int y1, int x2, int  y2, String title, String subtitle, uint16_t color, String swipeDirection)
 {
-  if(swipeDirection == RIGHT)
+  if (swipeDirection == RIGHT)
   {
     tft.setRotation(2);
     tft.fillScreen(BLACK);
   }
-  else if(swipeDirection == LEFT)
+  else if (swipeDirection == LEFT)
   {
     tft.setRotation(0);
     tft.fillScreen(BLACK);
   }
-  
+
   tft.setRotation(1);
   tft.fillScreen(BLACK);
 
@@ -40,15 +40,15 @@ void PressAnyButtonUI(uint16_t color)
   tft.drawTriangle(screenWidth / 2 - 100, screenHeight - 27, screenWidth / 2 - 90, screenHeight - 22, screenWidth / 2 - 90, screenHeight - 32, color);
 
   tft.setTextSize(1);
-  
+
   unsigned int counter = 0;
   while (true)
   {
     MainMenuInput();
 
     counter += CalculateDeltaTime();
-    
-    if(counter < 500)
+
+    if (counter < 500)
     {
       tft.setTextColor(color);
       tft.setCursor(screenWidth / 2 - 67, screenHeight - 30);
@@ -60,8 +60,8 @@ void PressAnyButtonUI(uint16_t color)
       tft.setTextColor(BLACK);
       tft.setCursor(screenWidth / 2 - 67, screenHeight - 30);
       tft.print("PRESS ANY BUTTON TO START");
-      
-      if(counter > 900)
+
+      if (counter > 900)
         counter = 0;
     }
 
@@ -101,7 +101,7 @@ void TheMatrixUI(String swipeDirection)
 
   tft.setTextSize(0);
   tft.setTextColor(0x0500);
-  
+
   for (int i = 0; i < 30; i++) {
     tft.setCursor(random(0, screenWidth), random(0, screenHeight));
     tft.print(random(0, 2));
@@ -136,10 +136,10 @@ void SnakeUI(String swipeDirection)
 {
   GameTitleUI(screenWidth / 2 -  18, screenHeight / 2 - 65 , screenWidth / 2 - 68, screenHeight / 2 - 40, "Snake", "Retro classic", MAGENTA, swipeDirection);
 
-  for(int i = 0; i < 40; i++) {
+  for (int i = 0; i < 40; i++) {
     tft.drawPixel(random(0, screenWidth), random(0, screenHeight), MAGENTA);
     delay(20);
-    }
+  }
   for (int i = 0; i < 10; i++)
     tft.drawCircle(random(0, screenWidth), random(0, screenHeight), random(0, 2), MAGENTA);
 

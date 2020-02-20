@@ -55,8 +55,8 @@ void StartSnake()
       RefreshDisplay(Snake);
     }
   }
-
-  GameOver();
+  
+  GameOver("SNAKE", score);//-------------------------------------------------------STAVITI UMJESTO 25 SCORE
 }
 
 
@@ -143,19 +143,6 @@ void UpdateSnakePositions(Vector<BodyPart> &Snake, bool eaten = false)
 void RefreshDisplay(Vector<BodyPart> &Snake)
 {
   tft.drawRect(Snake[0].positionX, Snake[0].positionY, snakeScalingFactor, snakeScalingFactor, MAGENTA);
-}
-
-void GameOver()
-{
-  tft.setTextSize(2);
-  tft.setTextColor(RED);
-  tft.setCursor(150, 70);
-  tft.println("GAME OVER");
-  tft.setCursor(150, 120);
-  tft.print("score: " + (String)score);
-
-  delay(2000);
-  StartSnake();
 }
 
 void UpdateScore()

@@ -2,6 +2,7 @@
 //#include <Adafruit_TFTLCD.h> // Hardware-specific library
 #include <MCUFRIEND_kbv.h>
 #include <Vector.h>
+#include <SD.h>
 #include<BMO_gfx.h>
 
 // TFT Breakout  -- Arduino Mega2560
@@ -39,10 +40,16 @@ MCUFRIEND_kbv tft;
 // a simpler declaration can optionally be used:
 // Adafruit_TFTLCD tft;
 
+//SD Card Files
+File file;
+
 
 //GLOBAL CONSTANTS DEFINITIONS
 const int screenWidth = tft.height();
 const int screenHeight = tft.width();
+
+//SD Card-Adapter Pin
+const int MicroSDPin = 30;
 
 //ButtonPins and States
 const int LeftButton = 2;
@@ -51,10 +58,10 @@ int LeftButtonState = 0;
 const int RightButton = 3;
 int RightButtonState = 0;
 
-const int UpButton = 52;
+const int UpButton = 46;
 int UpButtonState = 0;
 
-const int DownButton = 53;
+const int DownButton = 47;
 int DownButtonState = 0;
 
 
