@@ -52,18 +52,20 @@ const int screenHeight = tft.width();
 const int MicroSDPin = 30;
 
 //ButtonPins and States
-const int LeftButton = 2;
-int LeftButtonState = 0;
+const int YAxis = A8;
+int YAxisValue = 0;
 
-const int RightButton = 3;
-int RightButtonState = 0;
+const int XAxis = A9;
+int XAxisValue = 0;
 
-const int UpButton = 46;
-int UpButtonState = 0;
+const int RedButton = 2;
+int RedButtonState = 0;
 
-const int DownButton = 47;
-int DownButtonState = 0;
+const int BlueButton = 3;
+int BlueButtonState = 0;
 
+const int WhiteButton = 46;
+int WhiteButtonState = 0;
 
 
 //Input Constants
@@ -71,9 +73,13 @@ String LEFT = "left";
 String RIGHT = "right";
 String UP = "up";
 String DOWN = "down";
+String REDBUTTON = "redbutton";
+String BLUEBUTTON = "bluebutton";
+String WHITEBUTTON = "whitebutton";
 String NONE = "none";
 
-
+//FileName Constants
+String SNAKE = "SNAKE";
 
 //-----------------------------------------
 //GLOBAL FUNCTION FOR CALCULATING DELTA TIME

@@ -1,35 +1,54 @@
 //Array of function pointers for the game select UI
 void (* gameSelectUI [3])(String) = {StarWarsUI, TheMatrixUI, SnakeUI};
+void (* gameSelectStart [3])() = {StarWarsUI, TheMatrixUI, StartSnake};
 int currentGameUI = 0;
 
-String CheckInputs()
+String CheckAnalogInputs()
 {
-  LeftButtonState = digitalRead(LeftButton);
-  RightButtonState = digitalRead(RightButton);
-  UpButtonState = digitalRead(UpButton);
-  DownButtonState = digitalRead(DownButton);
+  YAxisValue = analogRead(YAxis);
+  XAxisValue = analogRead(XAxis);
 
-  if (LeftButtonState == HIGH)
-  {
-    return LEFT;
-  }
-  else if (RightButtonState == HIGH)
+  if (XAxisValue > 700)
   {
     return RIGHT;
   }
-   else if (UpButtonState == HIGH)
+  else if (XAxisValue < 300)
+  {
+    return LEFT;
+  }
+   else if (YAxisValue < 300)
   {
     return UP;
   }
-   else if (DownButtonState == HIGH)
+   else if (YAxisValue > 700)
   {
     return DOWN;
   }
-
   return NONE;
 }
 
-int CalculateCurrentGameUI(String swipeDirection)
+String CheckButtonInputs()
+{
+  RedButtonState = digitalRead(RedButton);
+  BlueButtonState = digitalRead(BlueButton);
+  WhiteButtonState = digitalRead(WhiteButton);
+
+  if (RedButtonState == HIGH)
+  {
+    return REDBUTTON;
+  }
+  else if (BlueButtonState == HIGH)
+  {
+    return BLUEBUTTON;
+  }
+   else if (WhiteButtonState == HIGH)
+  {
+    return WHITEBUTTON;
+  }
+  return NONE;
+}
+
+void CalculateCurrentGameUI(String swipeDirection)
 {
   if (swipeDirection.equals(LEFT))
   {

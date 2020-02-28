@@ -26,7 +26,7 @@ void GameOver(String fileName, int score)
 
     if (SaveHighscoreToSDCard(fileName, playerName, score))
     {
-      tft.setCursor(120, 160);
+      tft.setCursor(100, 160);
       tft.setTextColor(GREEN);
       tft.print("successfully saved!");
     }
@@ -37,7 +37,7 @@ void GameOver(String fileName, int score)
       tft.print("Error saving!");
     }
   }
-  StartSnake();//CHANGE THIS WITH GAME OVER SCREN
+  GameOverUI(fileName, score);
 }
 
 String EnterUsername()
@@ -88,6 +88,7 @@ String EnterUsername()
 
   String playerName;
   String input;
+  String buttonInput;
 
   int letterOffset = 30;
   int letterPosition = 140;
@@ -98,7 +99,8 @@ String EnterUsername()
   while (isPicking)
   {
     //INPUT CHECK
-    input = CheckInputs();
+    input = CheckAnalogInputs();
+    buttonInput = CheckButtonInputs();
 
     playerNameLength = playerName.length();
 
@@ -111,7 +113,7 @@ String EnterUsername()
       DrawLetter(BLACK, letterPosition, letter);
       letter++;
     }
-    else if (input == DOWN && playerNameLength < 5)
+    else if (buttonInput == BLUEBUTTON && playerNameLength < 5)
     {
       DrawLetter(WHITE, letterPosition, letter);
       playerName += letter;
@@ -123,7 +125,7 @@ String EnterUsername()
       if (playerNameLength == 4) //if we add all 5 letters
         finishedPicking = true;
     }
-    else if (input == UP && playerNameLength > 0 && playerNameLength < 6)
+    else if (buttonInput == REDBUTTON && playerNameLength > 0 && playerNameLength < 6)
     {
       if (playerNameLength == 5)
         finishedPicking = false;
@@ -140,11 +142,11 @@ String EnterUsername()
       hasDeleted = true;
 
     }
-    //TEMP BUTTON FOR CONFIRM
-    if (input == LEFT && playerNameLength == 5)
+
+    if (buttonInput == WHITEBUTTON && playerNameLength >= 1)
       isPicking = false;
 
-    if (input != NONE)
+    if (input != NONE || buttonInput != NONE)
       delay(300);
 
     //END OF INPUT CHECK
@@ -169,4 +171,77 @@ void DrawLetter(uint16_t color, int letterPosition, char letter)
   tft.setTextSize(2);
   tft.setCursor(letterPosition, 130);
   tft.print(letter);
+}
+
+void GameOverUI(String fileName, int score)
+{
+  tft.fillScreen(BLACK);
+
+  for (int i = 0; i < 80; i++) {
+    tft.drawPixel(random(0, screenWidth), random(0, screenHeight), WHITE);
+    delay(5);
+  }
+
+  String highscores = GetHighscores(fileName);
+  int YPosition = 90;
+
+  tft.setTextSize(2);
+  tft.setCursor(80, 50);
+  tft.setTextColor(RED);
+  tft.println("GAME OVER");
+
+  tft.setCursor(80, 100);
+  tft.setTextColor(GREEN);
+  tft.println("Score: " + (String)score);
+
+  //Inputs
+  tft.fillCircle(50, 170, 6, BLUE);
+  tft.fillCircle(130, 170, 6, RED);
+
+  tft.setTextSize(1);
+  tft.setCursor(40, 180);
+  tft.setTextColor(BLUE);
+  tft.println("restart");
+
+  tft.drawRect(260, 35, 110, 180, YELLOW);
+  //Text Settings
+  tft.setTextSize(1);
+  tft.setTextColor(YELLOW);
+  tft.setCursor(280, 50);
+  tft.println("HIGHSCORES");
+
+  for (int i = 0; i < 5; i++)
+  {
+    tft.setCursor(270, YPosition);
+    YPosition += 20;
+
+    int endRange = 0;
+    for (int j = 0; j < highscores.length(); j++)
+      if (highscores[j] == ':')
+      {
+        endRange = j;
+        break;
+      }
+
+    String currentScore = highscores.substring(0, endRange - 1);
+    tft.println((String)(i + 1) + "." + currentScore.substring(0, 5) + "     " + currentScore.substring(5, currentScore.length()));
+
+    highscores = highscores.substring(endRange + 1, highscores.length());
+  }
+
+  bool isRunning = true;
+  String input;
+  while (isRunning)
+  {
+    input = CheckButtonInputs();
+
+    if (input != NONE && input != WHITEBUTTON)
+      isRunning = false;
+  }
+
+  if (input == BLUEBUTTON)
+    gameSelectStart[currentGameUI]();
+  else if (input == REDBUTTON)
+    MainMenu();
+
 }

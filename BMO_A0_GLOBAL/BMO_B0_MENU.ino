@@ -70,9 +70,13 @@ void PressAnyButtonUI(uint16_t color)
 
 void MainMenuInput()
 {
-  String buttonPressed = CheckInputs();
-
-  CalculateCurrentGameUI(buttonPressed);
+  String buttonPressed = CheckAnalogInputs();
+  
+  String gameSelected = CheckButtonInputs();
+  if(gameSelected != NONE)
+    gameSelectStart[currentGameUI]();
+  else
+    CalculateCurrentGameUI(buttonPressed);
 }
 
 //------------------------------------

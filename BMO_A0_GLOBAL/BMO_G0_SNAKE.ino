@@ -35,7 +35,7 @@ void StartSnake()
   while(isRunning)
   {
     //Checking for input
-    String tempVal = CheckInputs();
+    String tempVal = CheckAnalogInputs();
     
     if((movementDirection == LEFT && tempVal == RIGHT) || (movementDirection == RIGHT && tempVal == LEFT) || (movementDirection == UP && tempVal == DOWN) || (movementDirection == DOWN && tempVal == UP))
     {
@@ -56,7 +56,7 @@ void StartSnake()
     }
   }
   
-  GameOver("SNAKE", score);//-------------------------------------------------------STAVITI UMJESTO 25 SCORE
+  GameOver(SNAKE, score);//-------------------------------------------------------STAVITI UMJESTO 25 SCORE
 }
 
 

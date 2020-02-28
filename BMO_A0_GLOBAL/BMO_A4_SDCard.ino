@@ -146,7 +146,7 @@ String GetHighscores(String fileName)
     while (counter < 5)
     {
       list = file.readStringUntil('\n');
-      highscoreList += list.substring(0, 5) + list.substring(5, 20);
+      highscoreList += list.substring(0, 5) + list.substring(5, 20) + ":";
       counter++;
     }
     file.close();
