@@ -1,37 +1,3 @@
-//Examples of read - write to sd
-//  ReadFromSDCard("snake");
-//  WriteToSDCard("snake", "TEST", 15);
-
-void ReadFromSDCard(String fileName) //category e.g. game/music/etc..
-{
-  file = SD.open(fileName + ".txt", FILE_READ);
-
-  if (file)
-  {
-    char character;
-    while ((character = file.read()) != -1) { // this while loop reads data stored in "file.txt" and prints it to serial monitor
-      Serial.print(character);
-    }
-    file.close();
-  }
-  else
-  {
-    Serial.println("Could not open file (reading).");
-  }
-}
-
-void WriteToSDCard(String fileName, String username, int score)
-{
-  file = SD.open(fileName + ".txt", FILE_WRITE); // open "file.txt" to write data
-
-  if (file) {
-    file.println(username + " " + (String)score); // write number to file
-    file.close(); // close file
-  } else {
-    Serial.println("Could not open file (writing).");
-  }
-}
-
 bool CheckForHighscore(String fileName, int score)
 {
   file = SD.open(fileName + ".txt", FILE_READ);
@@ -57,7 +23,6 @@ bool CheckForHighscore(String fileName, int score)
       return true;
   return false;
 }
-
 
 bool SaveHighscoreToSDCard(String fileName, String username, int score)
 {

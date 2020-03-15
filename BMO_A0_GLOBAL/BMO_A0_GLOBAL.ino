@@ -4,6 +4,7 @@
 #include <Vector.h>
 #include <SD.h>
 #include<BMO_gfx.h>
+#include <TMRpcm.h>  
 
 // TFT Breakout  -- Arduino Mega2560
 // GND              -- GND
@@ -32,8 +33,11 @@
 #define MAGENTA 0xF81F
 #define YELLOW  0xFFE0
 #define WHITE   0xFFFF
+#define BROWN 0xEF17
 
 MCUFRIEND_kbv tft;
+TMRpcm tmrpcm; 
+
 
 //Adafruit_TFTLCD tft(LCD_CS, LCD_CD, LCD_WR, LCD_RD, LCD_RESET);
 // If using the shield, all control and data lines are fixed, and
@@ -43,13 +47,17 @@ MCUFRIEND_kbv tft;
 //SD Card Files
 File file;
 
-
+  
 //GLOBAL CONSTANTS DEFINITIONS
 const int screenWidth = tft.height();
 const int screenHeight = tft.width();
 
 //SD Card-Adapter Pin
 const int MicroSDPin = 30;
+
+//BuzzerPin Sound Effects
+const int Buzzer_SFX = 28;
+const int Speaker_SFX = 46;
 
 //ButtonPins and States
 const int YAxis = A8;
@@ -64,7 +72,7 @@ int RedButtonState = 0;
 const int BlueButton = 3;
 int BlueButtonState = 0;
 
-const int WhiteButton = 46;
+const int WhiteButton = 44;
 int WhiteButtonState = 0;
 
 
@@ -80,6 +88,13 @@ String NONE = "none";
 
 //FileName Constants
 String SNAKE = "SNAKE";
+
+//Global settings
+bool isRunning = false;
+int score = 0;
+
+//Game constants
+char* CRATE = "crate";
 
 //-----------------------------------------
 //GLOBAL FUNCTION FOR CALCULATING DELTA TIME

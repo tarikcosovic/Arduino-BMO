@@ -8,8 +8,15 @@ void GameOver(String fileName, int score)
     //If we have a highscore, the player has to enter his name
     playerName = EnterUsername();
     //Saving indicator
-    Serial.println(playerName);
     tft.fillScreen(BLACK);
+    //STARS BG
+    for (int i = 0; i < 80; i++) {
+      tft.drawPixel(random(0, screenWidth), random(0, screenHeight), WHITE);
+      delay(20);
+    }
+    for (int i = 0; i < 10; i++)
+      tft.drawCircle(random(0, screenWidth), random(0, screenHeight), random(0, 2), WHITE);
+    //------------
     tft.setCursor(150, 70);
     tft.setTextColor(WHITE);
     tft.print("Saving..");
@@ -179,7 +186,7 @@ void GameOverUI(String fileName, int score)
 
   for (int i = 0; i < 80; i++) {
     tft.drawPixel(random(0, screenWidth), random(0, screenHeight), WHITE);
-    delay(5);
+    delay(2);
   }
 
   String highscores = GetHighscores(fileName);
@@ -187,21 +194,26 @@ void GameOverUI(String fileName, int score)
 
   tft.setTextSize(2);
   tft.setCursor(80, 50);
-  tft.setTextColor(RED);
+  tft.setTextColor(YELLOW);
   tft.println("GAME OVER");
 
-  tft.setCursor(80, 100);
+  tft.setCursor(90, 100);
   tft.setTextColor(GREEN);
-  tft.println("Score: " + (String)score);
+  tft.println("Score:" + (String)score);
 
   //Inputs
-  tft.fillCircle(50, 170, 6, BLUE);
-  tft.fillCircle(130, 170, 6, RED);
+  tft.fillCircle(100, 170, 6, BLUE);
+  tft.fillCircle(170, 170, 6, RED);
 
   tft.setTextSize(1);
-  tft.setCursor(40, 180);
+  tft.setCursor(80, 190);
   tft.setTextColor(BLUE);
   tft.println("restart");
+
+  tft.setTextSize(1);
+  tft.setCursor(160, 190);
+  tft.setTextColor(RED);
+  tft.println("exit");
 
   tft.drawRect(260, 35, 110, 180, YELLOW);
   //Text Settings
@@ -244,4 +256,32 @@ void GameOverUI(String fileName, int score)
   else if (input == REDBUTTON)
     MainMenu();
 
+}
+
+void GameStartTimer()
+{
+  tft.setTextSize(3);
+  tft.setCursor(200, 100);
+  tft.setTextColor(YELLOW);
+  tft.print("3");
+  delay(500);
+  tft.setCursor(200, 100);
+  tft.setTextColor(BLACK);
+  tft.print("3");
+
+  tft.setCursor(200, 100);
+  tft.setTextColor(YELLOW);
+  tft.print("2");
+  delay(500);
+  tft.setCursor(200, 100);
+  tft.setTextColor(BLACK);
+  tft.print("2");
+
+  tft.setCursor(200, 100);
+  tft.setTextColor(YELLOW);
+  tft.print("1");
+  delay(500);
+  tft.setCursor(200, 100);
+  tft.setTextColor(BLACK);
+  tft.print("1");
 }
