@@ -29,34 +29,43 @@ InvaderShip playerBullet;
 int movementConstraintLeft = 80;
 int movementConstraintRight = 320;
 
-int invadersSpeedOffset = 400;
+int invadersSpeedOffset = 350;
 
 bool isFiring = false;
 bool changeSides = false;
 bool UpdateYPosition = false;
+bool attackBunkers = true;
 
-void StartInvaders()//AFTER EACH LEVEL JUST SET STARTING Y POSITION TO LOWER! or in this cord sys to higher and maybe vector instead of arrays for better optimisation
+int currentLevelInvaders;
+int startingPositionYInvaders = 60;
+
+void StartInvaders()
 {
   unsigned int gameSpeedInvaders = 0;
   unsigned int playerSpeed = 0;
   unsigned int bulletSpeedInvaders = 0;
   unsigned int EnemyBulletSpeedInvaders = 0;
   unsigned int frameTime = 0;
+  currentLevelInvaders = 1;
+
+  isFiring = false;
+  changeSides = false;
+  UpdateYPosition = false;
+  currentRow = 2;
 
   String inputVal;
 
   tft.fillScreen(BLACK);
   score = 0;
+  startingPositionYInvaders = 60;
   isRunning = true;
+  attackBunkers = true;
 
   //Define Player Starting Cords
   playerShip.x = 200;
   playerShip.y = 200;
 
   CreateEnemyShips();
-  CreateBunkers();
-
-  UpdatePlayerShip(NONE);//Drawing the initial player ship
   DrawInitialInvaders();
   while (isRunning)
   {
@@ -82,7 +91,9 @@ void StartInvaders()//AFTER EACH LEVEL JUST SET STARTING Y POSITION TO LOWER! or
       UpdateGameLogicInvaders();
 
       //Draws WHITE
-      UpdateGraphicsInvaders(WHITE);
+      if (currentLevelInvaders < 4)
+        UpdateGraphicsInvaders(WHITE);
+      else UpdateGraphicsInvaders(RED);
 
       if (currentRow == 0)
         currentRow = 2;//Manually insert enemyRows -1 due to a bug
@@ -100,31 +111,66 @@ void StartInvaders()//AFTER EACH LEVEL JUST SET STARTING Y POSITION TO LOWER! or
       if (inputVal != NONE)
         UpdatePlayerShip(inputVal);
 
-      UpdateInvaderBullet();
+      if (currentLevelInvaders < 4)
+        UpdateInvaderBullet(WHITE);
+      else  UpdateInvaderBullet(RED);
 
     }
   }
+  GameOver(INVADERS, score);
 }
 
 void CreateEnemyShips()
 {
+  tft.fillScreen(BLACK);
+  uint16_t color;
+
+  switch (currentLevelInvaders)
+  {
+    case 1:
+      color = WHITE;
+      break;
+    case 2:
+      color = CYAN;
+      break;
+    case 3:
+      color = MAGENTA;
+      break;
+    default:
+      color = RED;
+      break;
+  }
   //Drawing some stars
   for (int i = 0; i < 80; i++) {
-    tft.drawPixel(random(0, screenWidth), random(0, screenHeight), WHITE);
+    tft.drawPixel(random(0, screenWidth), random(0, screenHeight), color);
     delay(20);
   }
   for (int i = 0; i < 10; i++)
-    tft.drawCircle(random(0, screenWidth), random(0, screenHeight), random(0, 2), WHITE);
+    tft.drawCircle(random(0, screenWidth), random(0, screenHeight), random(0, 2), color);
 
+  tft.setTextColor(WHITE);
   tft.setCursor(10, 20);
   tft.print("SCORE:");
+  tft.setCursor(10, 40);
+  tft.print("LEVEL:");
+
+  UpdateLevelInvaders();
+
+  if (currentLevelInvaders == 3)
+    CreateBunkers(MAGENTA);
+  else
+    CreateBunkers(WHITE);
+
+  UpdatePlayerShip(NONE);//Drawing the initial player ship
 
   //Starting position
   int enemyX = 100;
-  int enemyY = 30;
+  int enemyY = startingPositionYInvaders;
 
+  enemyBullets.Clear();
   for (int i = 0; i < enemyRows; i++)
   {
+    enemyShips[i].Clear();
     for (int j = 0; j < enemyColumns; j++)
     {
       InvaderShip temp(enemyX, enemyY);
@@ -136,12 +182,12 @@ void CreateEnemyShips()
   }
 }
 
-void CreateBunkers()
+void CreateBunkers(uint16_t color)
 {
   int temp = 125;
   for (int i = 0; i < 4; i++)
   {
-    tft.drawBitmap(temp, 170, bunker, 5, 7, WHITE);
+    tft.drawBitmap(temp, 170, bunker, 5, 7, color);
     temp += 50;
   }
 }
@@ -156,7 +202,7 @@ void UpdateGameLogicInvaders()
     if (currentRow == 0)
       UpdateYPosition = false;
 
-    if(enemyShips[currentRow].Size() > 0 && enemyShips[currentRow][0].y > 180)
+    if (enemyShips[currentRow].Size() > 0 && enemyShips[currentRow][0].y > 200)
       isRunning = false;
   }
 
@@ -187,8 +233,6 @@ void UpdateGameLogicInvaders()
     movingLeft = !movingLeft;
     changeSides = false;
     UpdateYPosition = true;
-
-    invadersSpeedOffset -= 10;//Increasing the movement speed of invaders
   }
 }
 
@@ -231,11 +275,12 @@ void CheckBulletCollision()
   if (playerBullet.y < -6)
     isFiring = false;
   //If bullet hits bunker
-  if ((playerBullet.x > 122 && playerBullet.x < 131 && playerBullet.y == 180) || (playerBullet.x > 172 && playerBullet.x < 181 && playerBullet.y == 180) ||
-      (playerBullet.x > 222 && playerBullet.x < 231 && playerBullet.y == 180)  || (playerBullet.x > 272 && playerBullet.x < 281 && playerBullet.y == 180)) {
-    tft.fillRect(playerBullet.x + 2, playerBullet.y, 2, 6, BLACK);
-    isFiring = false;
-  }
+  if (attackBunkers)
+    if ((playerBullet.x > 122 && playerBullet.x < 131 && playerBullet.y == 180) || (playerBullet.x > 172 && playerBullet.x < 181 && playerBullet.y == 180) ||
+        (playerBullet.x > 222 && playerBullet.x < 231 && playerBullet.y == 180)  || (playerBullet.x > 272 && playerBullet.x < 281 && playerBullet.y == 180)) {
+      tft.fillRect(playerBullet.x + 2, playerBullet.y, 2, 6, BLACK);
+      isFiring = false;
+    }
 
   for (int i = 0; i < 3; i++)
   {
@@ -250,13 +295,14 @@ void CheckBulletCollision()
 
         isFiring = false;
         UpdateScoreInvaders();
+        CheckNextLevel();
         break;
       }
     }
   }
 }
 
-void UpdateInvaderBullet()
+void UpdateInvaderBullet(uint16_t color)
 {
   if (enemyBullets.Size() > 0)
   {
@@ -264,7 +310,7 @@ void UpdateInvaderBullet()
     {
       tft.fillRect(enemyBullets[i].x, enemyBullets[i].y, 2, 6, BLACK);
       enemyBullets[i].y += 2;
-      tft.fillRect(enemyBullets[i].x, enemyBullets[i].y, 2, 6, WHITE);
+      tft.fillRect(enemyBullets[i].x, enemyBullets[i].y, 2, 6, color);
 
       CheckEnemyBulletCollision(enemyBullets[i], i);
     }
@@ -280,11 +326,12 @@ void CheckEnemyBulletCollision(InvaderShip temp, int index)
     enemyBullets.Erase(index);
   }
   //If bullet hits bunker
-  if ((temp.x > 122 && temp.x < 131 && (temp.y > 160 && temp.y < 170)) || (temp.x > 172 && temp.x < 181 && (temp.y > 160 && temp.y < 170)) ||
-      (temp.x > 222 && temp.x < 231 && (temp.y > 160 && temp.y < 170))  || (temp.x > 272 && temp.x < 281 && (temp.y > 160 && temp.y < 170))) {
-    tft.fillRect(temp.x, temp.y, 2, 6, BLACK);
-    enemyBullets.Erase(index);
-  }
+  if (attackBunkers)
+    if ((temp.x > 122 && temp.x < 131 && (temp.y > 160 && temp.y < 170)) || (temp.x > 172 && temp.x < 181 && (temp.y > 160 && temp.y < 170)) ||
+        (temp.x > 222 && temp.x < 231 && (temp.y > 160 && temp.y < 170))  || (temp.x > 272 && temp.x < 281 && (temp.y > 160 && temp.y < 170))) {
+      tft.fillRect(temp.x, temp.y, 2, 6, BLACK);
+      enemyBullets.Erase(index);
+    }
 
   if (temp.x > playerShip.x - 4 && temp.x < playerShip.x + 4 && (temp.y > playerShip.y - 5 && temp.y < playerShip.y + 5))
     isRunning = false;
@@ -304,6 +351,33 @@ void SpawnBulletsInvaders()
     }
   }
 }
+void CheckNextLevel()
+{
+  bool nextLvl = true;
+  for (int i = 0; i < 3; i++)
+    if (enemyShips[i].Size() > 0)
+      nextLvl = false;
+
+  if (nextLvl)
+    NextLevelInvaders();
+}
+void NextLevelInvaders()
+{
+  currentLevelInvaders++;
+  CreateEnemyShips();
+  if (currentLevelInvaders < 7)
+    startingPositionYInvaders += 10;
+
+  if (currentLevelInvaders < 4)
+    CreateBunkers(WHITE);
+  else
+  {
+    CreateBunkers(BLACK);
+    attackBunkers = false;
+  }
+
+  DrawInitialInvaders();
+}
 
 void UpdateScoreInvaders()
 {
@@ -311,9 +385,19 @@ void UpdateScoreInvaders()
   tft.setCursor(50, 20);
   tft.print(score);
   score++;
-  tft.setTextColor(WHITE);
+  tft.setTextColor(YELLOW);
   tft.setCursor(50, 20);
   tft.print(score);
+}
+
+void UpdateLevelInvaders()
+{
+  tft.setTextColor(BLACK);
+  tft.setCursor(50, 40);
+  tft.print(currentLevelInvaders);
+  tft.setTextColor(YELLOW);
+  tft.setCursor(50, 40);
+  tft.print(currentLevelInvaders);
 }
 
 void DrawInitialInvaders()
@@ -324,5 +408,5 @@ void DrawInitialInvaders()
   currentRow--;
   UpdateGraphicsInvaders(WHITE);
   currentRow = 2;
-  delay(1000);
+  delay(2000);
 }

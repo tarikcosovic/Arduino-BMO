@@ -88,6 +88,7 @@ String NONE = "none";
 
 //FileName Constants
 String SNAKE = "SNAKE";
+String INVADERS = "SPACE";
 
 //Global settings
 bool isRunning = false;
