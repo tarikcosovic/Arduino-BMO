@@ -5,9 +5,6 @@ const unsigned char invader[]PROGMEM = {B00111000, B11010110, B11111110, B001010
 //DMENSIONS 3 - 6
 const unsigned char playership[]PROGMEM = {B00010000, B01111100, B11111110, B11111110, B10001010, B01000000, B00000100, B10010010, B10010010, B00000100, B01000000, B10001010};
 
-//DIMENSIONS 2 - 6
-const unsigned char bomb[]PROGMEM = {B10000000, B01000000, B10000000, B01000000, B01000000, B10000000, B01000000, B1000000};
-
 //DIMENSIONS 5 - 7
 
 const unsigned char bunker[]PROGMEM  = { B01111110, B11111111, B11111111, B11100111, B11000011, B01111110, B11011011, B11111111, B10100101, B11000011, B01101110, B11011011, B01110110, B10100101, B11000011, B01100110, B11011001, B01010110, B10100101, B01000010, B00100010, B10001001, B01010010, B10100101, B01000010};
@@ -15,15 +12,22 @@ const unsigned char bunker[]PROGMEM  = { B01111110, B11111111, B11111111, B11100
 //Game Configuration
 const int enemyRows = 3;
 const int enemyColumns = 13;
-InvaderShip enemyShips[enemyRows][enemyColumns];
+Vector<InvaderShip> enemyShipsRow1;
+Vector<InvaderShip> enemyShipsRow2;
+Vector<InvaderShip> enemyShipsRow3;
+
+Vector<InvaderShip> enemyShips[3] = {enemyShipsRow1, enemyShipsRow2, enemyShipsRow3};
+
 bool movingLeft = false;
 int currentRow = 2; //Manually insert enemyRows -1 due to a bug
+
+Vector<InvaderShip> enemyBullets;
 
 InvaderShip playerShip;
 InvaderShip playerBullet;
 
-int movementConstraintLeft = 100;
-int movementConstraintRight = 300;
+int movementConstraintLeft = 80;
+int movementConstraintRight = 320;
 
 int invadersSpeedOffset = 400;
 
@@ -36,6 +40,7 @@ void StartInvaders()//AFTER EACH LEVEL JUST SET STARTING Y POSITION TO LOWER! or
   unsigned int gameSpeedInvaders = 0;
   unsigned int playerSpeed = 0;
   unsigned int bulletSpeedInvaders = 0;
+  unsigned int EnemyBulletSpeedInvaders = 0;
   unsigned int frameTime = 0;
 
   String inputVal;
@@ -52,25 +57,19 @@ void StartInvaders()//AFTER EACH LEVEL JUST SET STARTING Y POSITION TO LOWER! or
   CreateBunkers();
 
   UpdatePlayerShip(NONE);//Drawing the initial player ship
-
+  DrawInitialInvaders();
   while (isRunning)
   {
     frameTime = CalculateDeltaTime();
     playerSpeed += frameTime;
     bulletSpeedInvaders += frameTime;
     gameSpeedInvaders += frameTime;
+    EnemyBulletSpeedInvaders += frameTime;
 
     inputVal = CheckButtonInputs();
     if (inputVal == BLUEBUTTON && !isFiring)
       DrawBulletInvaders();
 
-    if (playerSpeed % 20 == 0) // % 20 - Speed
-    {
-      inputVal = CheckAnalogInputs();
-      if (inputVal != NONE)
-        UpdatePlayerShip(inputVal);
-
-    }
     if (isFiring && bulletSpeedInvaders % 10 == 0)
       DrawBulletInvaders();
 
@@ -89,6 +88,21 @@ void StartInvaders()//AFTER EACH LEVEL JUST SET STARTING Y POSITION TO LOWER! or
         currentRow = 2;//Manually insert enemyRows -1 due to a bug
       else currentRow--;
     }
+
+    if (EnemyBulletSpeedInvaders % 2500 == 0)
+    {
+      SpawnBulletsInvaders();
+    }
+
+    if (playerSpeed % 20 == 0) // % 20 - Speed
+    {
+      inputVal = CheckAnalogInputs();
+      if (inputVal != NONE)
+        UpdatePlayerShip(inputVal);
+
+      UpdateInvaderBullet();
+
+    }
   }
 }
 
@@ -102,15 +116,19 @@ void CreateEnemyShips()
   for (int i = 0; i < 10; i++)
     tft.drawCircle(random(0, screenWidth), random(0, screenHeight), random(0, 2), WHITE);
 
+  tft.setCursor(10, 20);
+  tft.print("SCORE:");
+
   //Starting position
   int enemyX = 100;
-  int enemyY = 20;
+  int enemyY = 30;
+
   for (int i = 0; i < enemyRows; i++)
   {
     for (int j = 0; j < enemyColumns; j++)
     {
       InvaderShip temp(enemyX, enemyY);
-      enemyShips[i][j] = temp;
+      enemyShips[i].PushBack(temp);
       enemyX += 15;
     }
     enemyX = 100;
@@ -130,40 +148,38 @@ void CreateBunkers()
 
 void UpdateGameLogicInvaders()
 {
-  if (UpdateYPosition)//Updating the Y position when hitting the constraints
+  if (UpdateYPosition)
   {
+    for (int i = 0; i < enemyShips[currentRow].Size(); i++)
+      enemyShips[currentRow][i].y += 3;
+
     if (currentRow == 0)
       UpdateYPosition = false;
 
-    for (int i = 0; i < enemyColumns; i++)
-      enemyShips[currentRow][i].y += 2;
+    if(enemyShips[currentRow].Size() > 0 && enemyShips[currentRow][0].y > 180)
+      isRunning = false;
   }
 
   if (movingLeft)
   {
-    for (int i = 0; i < enemyColumns; i++)
+    for (int i = 0; i < enemyShips[currentRow].Size(); i++)
     {
-      if (!enemyShips[currentRow][i].isDead)
-      {
-        enemyShips[currentRow][i].x -= 4;
-        //If one of the ships goes over the left constraint change moving sides
-        if (enemyShips[currentRow][i].x < movementConstraintLeft)
-          changeSides = true;
-      }
+      enemyShips[currentRow][i].x -= 4;
+      //If one of the ships goes over the left constraint change moving sides
     }
+    if (enemyShips[currentRow].Size() > 0 && enemyShips[currentRow][0].x < movementConstraintLeft)
+      changeSides = true;
+    //Updating the Y position when hitting x constraint
   }
   else
   {
-    for (int i = 0; i < enemyColumns; i++)
+    for (int i = 0; i < enemyShips[currentRow].Size(); i++)
     {
-      if (!enemyShips[currentRow][i].isDead)
-      {
-        enemyShips[currentRow][i].x += 4;
-        //If one of the ships goes over the left constraint change moving sides
-        if (enemyShips[currentRow][i].x > movementConstraintRight)
-          changeSides = true;
-      }
+      enemyShips[currentRow][i].x += 4;
+      //If one of the ships goes over the left constraint change moving sides
     }
+    if (enemyShips[currentRow].Size() > 0 && enemyShips[currentRow][enemyShips[currentRow].Size() - 1].x > movementConstraintRight)
+      changeSides = true;
   }
 
   if (changeSides && currentRow == 0)
@@ -178,7 +194,7 @@ void UpdateGameLogicInvaders()
 
 void UpdateGraphicsInvaders(uint16_t color)
 {
-  for (int i = 0; i < enemyColumns; i++)
+  for (int i = 0; i < enemyShips[currentRow].Size(); i++)
     tft.drawBitmap(enemyShips[currentRow][i].x, enemyShips[currentRow][i].y, invader, 7, 5, color);
 }
 
@@ -221,6 +237,92 @@ void CheckBulletCollision()
     isFiring = false;
   }
 
-  //Collision with Invaders
+  for (int i = 0; i < 3; i++)
+  {
+    for (int j = 0 ; j < enemyShips[i].Size(); j++)
+    {
+      if ((abs(playerBullet.x - enemyShips[i][j].x)  <= 2 || abs(playerBullet.x - (enemyShips[i][j].x + 6))  <= 2) && abs(playerBullet.y - enemyShips[i][j].y) <= 2)
+      {
+        tft.drawBitmap(enemyShips[i][j].x, enemyShips[i][j].y, invader, 7, 5, BLACK);
+        tft.fillRect(playerBullet.x + 2, playerBullet.y, 2, 6, BLACK);
 
+        enemyShips[i].Erase(j);
+
+        isFiring = false;
+        UpdateScoreInvaders();
+        break;
+      }
+    }
+  }
+}
+
+void UpdateInvaderBullet()
+{
+  if (enemyBullets.Size() > 0)
+  {
+    for (int i = 0; i < enemyBullets.Size(); i ++)
+    {
+      tft.fillRect(enemyBullets[i].x, enemyBullets[i].y, 2, 6, BLACK);
+      enemyBullets[i].y += 2;
+      tft.fillRect(enemyBullets[i].x, enemyBullets[i].y, 2, 6, WHITE);
+
+      CheckEnemyBulletCollision(enemyBullets[i], i);
+    }
+  }
+}
+
+void CheckEnemyBulletCollision(InvaderShip temp, int index)
+{
+  //If bullet misses everything - reset
+  if (temp.y > 246)
+  {
+    tft.fillRect(temp.x, temp.y, 2, 6, BLACK);
+    enemyBullets.Erase(index);
+  }
+  //If bullet hits bunker
+  if ((temp.x > 122 && temp.x < 131 && (temp.y > 160 && temp.y < 170)) || (temp.x > 172 && temp.x < 181 && (temp.y > 160 && temp.y < 170)) ||
+      (temp.x > 222 && temp.x < 231 && (temp.y > 160 && temp.y < 170))  || (temp.x > 272 && temp.x < 281 && (temp.y > 160 && temp.y < 170))) {
+    tft.fillRect(temp.x, temp.y, 2, 6, BLACK);
+    enemyBullets.Erase(index);
+  }
+
+  if (temp.x > playerShip.x - 4 && temp.x < playerShip.x + 4 && (temp.y > playerShip.y - 5 && temp.y < playerShip.y + 5))
+    isRunning = false;
+}
+
+void SpawnBulletsInvaders()
+{
+  int rtemp = random(0, 5);
+  for (int c = 0; c < rtemp; c++)
+  {
+    int row = random(0, 3);
+    if (enemyShips[row].Size() > 0)
+    {
+      int col = random(0, enemyShips[row].Size());
+      InvaderShip temp(enemyShips[row][col].x, enemyShips[row][col].y);
+      enemyBullets.PushBack(temp);
+    }
+  }
+}
+
+void UpdateScoreInvaders()
+{
+  tft.setTextColor(BLACK);
+  tft.setCursor(50, 20);
+  tft.print(score);
+  score++;
+  tft.setTextColor(WHITE);
+  tft.setCursor(50, 20);
+  tft.print(score);
+}
+
+void DrawInitialInvaders()
+{
+  UpdateGraphicsInvaders(WHITE);
+  currentRow--;
+  UpdateGraphicsInvaders(WHITE);
+  currentRow--;
+  UpdateGraphicsInvaders(WHITE);
+  currentRow = 2;
+  delay(1000);
 }
