@@ -34,6 +34,7 @@
 #define YELLOW  0xFFE0
 #define WHITE   0xFFFF
 #define BROWN 0xEF17
+#define ORANGE 0xFF27
 
 MCUFRIEND_kbv tft;
 TMRpcm tmrpcm; 
@@ -93,6 +94,7 @@ String INVADERS = "SPACE";
 //Global settings
 bool isRunning = false;
 int score = 0;
+bool isPaused = false;
 
 //Game constants
 char* CRATE = "crate";

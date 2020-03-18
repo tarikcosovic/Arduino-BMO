@@ -59,6 +59,7 @@ void StartInvaders()
   score = 0;
   startingPositionYInvaders = 60;
   isRunning = true;
+  isPaused = false;
   attackBunkers = true;
 
   //Define Player Starting Cords
@@ -78,6 +79,9 @@ void StartInvaders()
     inputVal = CheckButtonInputs();
     if (inputVal == BLUEBUTTON && !isFiring)
       DrawBulletInvaders();
+    else if(inputVal != NONE)
+      ButtonsInvaders(inputVal);
+    if (isPaused)continue;
 
     if (isFiring && bulletSpeedInvaders % 10 == 0)
       DrawBulletInvaders();
@@ -409,4 +413,27 @@ void DrawInitialInvaders()
   UpdateGraphicsInvaders(WHITE);
   currentRow = 2;
   delay(2000);
+}
+
+void ButtonsInvaders(String temp)
+{
+  if (temp == WHITEBUTTON)
+  {
+    tft.setCursor(10, 60);
+    if (isPaused)
+    {
+      tft.setTextColor(BLACK);
+      tft.print("PAUSED");
+      isPaused = false;
+    }
+    else
+    {
+      tft.setTextColor(YELLOW);
+      tft.print("PAUSED");
+      isPaused = true;
+    }
+    delay(500);
+  }
+  else if (temp == REDBUTTON)
+    gameSelectUI[currentGameUI]("LEFT");
 }

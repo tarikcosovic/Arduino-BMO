@@ -13,23 +13,24 @@ void StartSnake()
 
   GameStartTimer();
   tft.setTextSize(1);
-  
+
   Vector<BodyPart> Snake;
   Snake.Clear();
-  
+
   BodyPart temp(240, 160); //Starting position of snake
   BodyPart temp2(240, 152);
   BodyPart temp3(240, 144);
-  
+
   Snake.PushBack(temp);
   Snake.PushBack(temp2);
   Snake.PushBack(temp3);
-  
+
   tft.drawRect(240, 152, snakeScalingFactor, snakeScalingFactor, MAGENTA);
   tft.drawRect(240, 144, snakeScalingFactor, snakeScalingFactor, MAGENTA);
 
   score = 0;
   isRunning = true;
+  isPaused = false;
   UpdateScore();
 
   unsigned int gameSpeed = 100;  //Setting the game speed
@@ -39,6 +40,11 @@ void StartSnake()
   {
     //Checking for input
     String tempVal = CheckAnalogInputs();
+
+    String tempVal2 = CheckButtonInputs();
+    if (tempVal2 != NONE)
+      ButtunInputsSnake(tempVal2);
+    if (isPaused)continue;
 
     if ((movementDirection == LEFT && tempVal == RIGHT) || (movementDirection == RIGHT && tempVal == LEFT) || (movementDirection == UP && tempVal == DOWN) || (movementDirection == DOWN && tempVal == UP))
     {
@@ -141,6 +147,29 @@ void UpdateSnakePositions(Vector<BodyPart> &Snake, bool eaten = false)
 
     UpdateScore();
   }
+}
+
+void ButtunInputsSnake(String temp)
+{
+  if (temp == WHITEBUTTON)
+  {
+    tft.setCursor(350, 5);
+    if (isPaused)
+    {
+      tft.setTextColor(BLACK);
+      tft.print("PAUSED");
+      isPaused = false;
+    }
+    else
+    {
+      tft.setTextColor(MAGENTA);
+      tft.print("PAUSED");
+      isPaused = true;
+    }
+    delay(500);
+  }
+  else if (temp == REDBUTTON)
+    gameSelectUI[currentGameUI]("LEFT");
 }
 
 void RefreshDisplay(Vector<BodyPart> &Snake)

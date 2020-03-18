@@ -1,14 +1,34 @@
-/*int sound[10]{300, 360, 250, 612, 125, 350, 362, 100, 800, 2000};
-  int duration[10]{200, 100, 0, 20, 500, 120, 200, 530, 100,50};
+void StartupConsole()
+{
+  tmrpcm.play("INTRO.wav");
+  tft.fillScreen(BLACK);
 
-  void loop(void) {
-  for(int i = 0; i < 10; i++)
+  tft.drawRect(130, 100, 150, 30, WHITE);
+
+  int indicatorWidth = 0;
+  while (indicatorWidth < 147)
   {
-    tone(Buzzer_SFX, sound[i], duration[i]); // (buzzer pin, sound frequency, duration)
-    // You can also use noTone() to stop the sound it takes 1 parametere which is the buzzer pin
+    tft.fillRect(132, 102, indicatorWidth, 26, 0xCFBA);
+    delay(20);
+    indicatorWidth++;
   }
+  for (int i = 0; i < 7; i++)
+  {
+    if (i % 2 == 0)
+      DrawDot(BLACK);
+    else DrawDot(0xCFBA);
+    delay(500);
   }
-*/
+
+  DrawBMO();
+}
+
+void DrawDot(uint16_t color)
+{
+  tft.setCursor(180, 75);
+  tft.setTextColor(color);
+  tft.print("Complete");
+}
 
 void DrawBMO()
 {
@@ -19,12 +39,7 @@ void DrawBMO()
   tft.fillRect(170, 70, 60, 30, 0xCFBA);
 }
 
-void StartupConsole()
-{
-  delay(2000);
-  tmrpcm.play("INTRO.wav");
-}
-
 void loop(void)
 {
+
 }

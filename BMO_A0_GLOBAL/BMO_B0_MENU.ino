@@ -71,9 +71,9 @@ void PressAnyButtonUI(uint16_t color)
 void MainMenuInput()
 {
   String buttonPressed = CheckAnalogInputs();
-  
+
   String gameSelected = CheckButtonInputs();
-  if(gameSelected != NONE)
+  if (gameSelected != NONE)
     gameSelectStart[currentGameUI]();
   else
     CalculateCurrentGameUI(buttonPressed);
@@ -84,14 +84,14 @@ void MainMenuInput()
 //GAME SUBTITLE: THE RETURN OF THE JEDI
 void StarWarsUI(String swipeDirection)
 {
-  GameTitleUI(screenWidth / 2 - 50, screenHeight / 2 - 40, screenWidth / 2 - 125, screenHeight / 2 - 20, "Star Wars", "The Return of The Jedi", YELLOW, swipeDirection);
+  GameTitleUI(screenWidth / 2 - 80, screenHeight / 2 - 50, screenWidth / 2 - 150, screenHeight / 2 - 20, "Space Invaders", "The Arcade Legend Returns", YELLOW, swipeDirection);
 
   for (int i = 0; i < 80; i++) {
-    tft.drawPixel(random(0, screenWidth), random(0, screenHeight), WHITE);
+    tft.drawPixel(random(0, screenWidth), random(0, screenHeight), CYAN);
     delay(20);
   }
   for (int i = 0; i < 10; i++)
-    tft.drawCircle(random(0, screenWidth), random(0, screenHeight), random(0, 2), WHITE);
+    tft.drawCircle(random(0, screenWidth), random(0, screenHeight), random(0, 2), YELLOW);
 
   PressAnyButtonUI(YELLOW);
 }
@@ -145,7 +145,10 @@ void SnakeUI(String swipeDirection)
     delay(20);
   }
   for (int i = 0; i < 10; i++)
+  {
     tft.drawCircle(random(0, screenWidth), random(0, screenHeight), random(0, 2), MAGENTA);
+    delay(10);
+  }
 
   tft.drawRect(130, 110, 160, 7, MAGENTA);
 

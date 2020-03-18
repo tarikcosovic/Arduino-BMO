@@ -16,11 +16,9 @@ void setup(void) {
   g_identifier = tft.readID(); //0x9327
   tft.begin(g_identifier);
   tft.setRotation(1); //Sets the screen rotation to horizontal
-
-  MainMenu();
-  //StartPacman();
-  //StartInvaders();
+  
   //StartupConsole();
+  MainMenu();
 }
 
 void InitiateSDCard()
