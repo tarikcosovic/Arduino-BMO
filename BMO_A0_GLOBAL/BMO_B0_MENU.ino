@@ -73,7 +73,9 @@ void MainMenuInput()
   String buttonPressed = CheckAnalogInputs();
 
   String gameSelected = CheckButtonInputs();
-  if (gameSelected != NONE)
+  if(gameSelected == REDBUTTON)
+    BMOMenu();
+  else if (gameSelected != NONE)
     gameSelectStart[currentGameUI]();
   else
     CalculateCurrentGameUI(buttonPressed);

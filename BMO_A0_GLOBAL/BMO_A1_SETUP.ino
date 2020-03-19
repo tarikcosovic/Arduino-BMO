@@ -18,7 +18,7 @@ void setup(void) {
   tft.setRotation(1); //Sets the screen rotation to horizontal
   
   //StartupConsole();
-  MainMenu();
+  BMOMenu();
 }
 
 void InitiateSDCard()
