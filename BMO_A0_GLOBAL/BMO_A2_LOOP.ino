@@ -41,5 +41,5 @@ void DrawBMO()
 
 void loop(void)
 {
-
+  tft.fillScreen(YELLOW);
 }

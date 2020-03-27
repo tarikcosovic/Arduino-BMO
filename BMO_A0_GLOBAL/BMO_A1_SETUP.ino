@@ -2,7 +2,7 @@ uint16_t g_identifier;
 
 void setup(void) {
 
-  //Serial. begin(9600); //For Debugging
+  Serial. begin(9600); //For Debugging
   randomSeed(analogRead(5));
 
   InitiateSDCard();
@@ -18,7 +18,8 @@ void setup(void) {
   tft.setRotation(1); //Sets the screen rotation to horizontal
   
   //StartupConsole();
-  BMOMenu();
+  //BMOMenu();
+  MusicMenu();
 }
 
 void InitiateSDCard()

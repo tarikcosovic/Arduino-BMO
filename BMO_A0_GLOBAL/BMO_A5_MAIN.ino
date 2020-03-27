@@ -17,56 +17,127 @@ MenuTitle option3("Highscores", 147, 120);
 MenuTitle option4("Music", 175, 155);
 
 MenuTitle optionMenu[4] {option1, option2, option3, option4};
+void (* selectMenuOption [4])() = {MainMenu, HighScoreMenu, HighScoreMenu, MusicMenu};
 
 void BMOMenu()
 {
   tft.fillScreen(BLACK);
+  BodyPart stars[80];
 
   for (int i = 0; i < 80; i++)
-    tft.drawPixel(random(0, screenWidth), random(0, screenHeight), 0xCFBA);
-  for (int i = 0; i < 10; i++)
-    tft.drawCircle(random(0, screenWidth), random(0, screenHeight), random(0, 3), 0xCFBA);
+  {
+    stars[i].positionX = random(0, screenWidth);
+    stars[i].positionY = random(0, screenHeight);
+  }
 
-  tft.setTextSize(2);
   bool inMenu = true;
   bool transition = false;
+  bool transitionAnimation = false;
+  unsigned int transitionAnimationTimer = 0;
   unsigned int menuTimer = 0;
   int currentOption = 1;
 
+  bool inputCheckAvailability = true;
+  unsigned int inputTimer = 0;
+
+  tft.setTextSize(2);
   for (int i = 0; i < 4; i++)
     DrawText(optionMenu[i].text, optionMenu[i].x, optionMenu[i].y, WHITE);
+  DrawCopyright(WHITE);
 
-  tft.setCursor(140, 220);
-  tft.setTextSize(1);
-  tft.print("(C)2020 Tarik Cosovic");
-  tft.setTextSize(2);
-  
   SelectText(false, currentOption);
 
+  int deltaTime;
   while (inMenu)
   {
-    menuTimer += CalculateDeltaTime();
+    deltaTime = CalculateDeltaTime();
 
-    if (menuTimer > 500)
+    menuTimer += deltaTime;
+    inputTimer += deltaTime;
+
+    if (transitionAnimation)
+      transitionAnimationTimer += deltaTime;
+
+
+    StarsMovementMainMenu(stars, transitionAnimation, currentOption);
+
+    if (menuTimer > 500 && !transitionAnimation)
     {
       if (transition)
         DrawText(optionMenu[currentOption].text, optionMenu[currentOption].x, optionMenu[currentOption].y, BLACK);
       else
-        DrawText(optionMenu[currentOption].text, optionMenu[currentOption].x, optionMenu[currentOption].y, RED);
+        DrawText(optionMenu[currentOption].text, optionMenu[currentOption].x, optionMenu[currentOption].y, WHITE);//0xE71C
       transition = !transition;
       menuTimer = 0;
     }
 
-    String temp = CheckAnalogInputs();
-    if (temp == DOWN && currentOption < 3)
-      SelectText(true, currentOption);
-    else if (temp == UP && currentOption > 0)
-      SelectText(false, currentOption);
+    if (inputTimer > 500)
+      inputCheckAvailability = true;
 
-    String test = CheckButtonInputs();
-    if (test == BLUEBUTTON)
-      MainMenu();
+    String temp = CheckAnalogInputs();
+    String temp2 = CheckButtonInputs();
+    if (inputCheckAvailability && (temp != NONE || temp2 != NONE))
+    {
+      MainMenuArrowCheck(temp, currentOption);
+      MainMenuButtonCheck(temp2, transitionAnimation);
+
+      inputCheckAvailability = false;
+      inputTimer = 0;
+    }
+
+    if (transitionAnimationTimer > 1500)
+    {
+      tft.setRotation(3);
+      tft.fillScreen(BLACK);
+      tft.setRotation(1);
+      selectMenuOption[currentOption]();
+    }
   }
+}
+
+void MainMenuButtonCheck(String temp, bool &transitionAnimation)
+{
+  if (temp == BLUEBUTTON)
+  {
+    for (int i = 0; i < 4; i++)
+      DrawText(optionMenu[i].text, optionMenu[i].x, optionMenu[i].y, BLACK);
+    DrawCopyright(BLACK);
+
+    transitionAnimation = true;
+  }
+}
+
+void StarsMovementMainMenu(BodyPart stars[80], bool transitionAnimation, int currentOption)
+{
+  for (int i = 0; i < 80; i++)
+  {
+    if (!transitionAnimation)
+      tft.drawPixel(stars[i].positionX, stars[i].positionY, BLACK);
+
+    stars[i].positionY--;
+    tft.drawPixel(stars[i].positionX, stars[i].positionY, CYAN);//0xCFBA
+
+    if (stars[i].positionY < 0)
+      stars[i].positionY = 240;
+  }
+  if (!transitionAnimation)
+  {
+    for (int i = 0; i < 4; i++)
+    {
+      if (currentOption == i)
+        continue;
+      DrawText(optionMenu[i].text, optionMenu[i].x, optionMenu[i].y, WHITE);
+    }
+    DrawCopyright(WHITE);
+  }
+}
+
+void MainMenuArrowCheck(String temp, int &currentOption)
+{
+  if (temp == DOWN && currentOption < 3)
+    SelectText(true, currentOption);
+  else if (temp == UP && currentOption > 0)
+    SelectText(false, currentOption);
 }
 
 void DrawText(String text, int x, int y, uint16_t color)
@@ -76,13 +147,20 @@ void DrawText(String text, int x, int y, uint16_t color)
   tft.print(text);
 }
 
+void DrawCopyright(uint16_t color)
+{
+  tft.setCursor(140, 220);
+  tft.setTextSize(1);
+  tft.setTextColor(color);
+  tft.print("(C)2020 Tarik Cosovic");
+  tft.setTextSize(2);
+}
+
 void SelectText(bool increment, int &currentOption)
 {
   DrawText(optionMenu[currentOption].text, optionMenu[currentOption].x, optionMenu[currentOption].y, WHITE);
   if (increment)
     currentOption++;
   else currentOption--;
-  DrawText(optionMenu[currentOption].text, optionMenu[currentOption].x, optionMenu[currentOption].y, RED);
-
-  delay(200);
+  DrawText(optionMenu[currentOption].text, optionMenu[currentOption].x, optionMenu[currentOption].y, 0xE71C);
 }
