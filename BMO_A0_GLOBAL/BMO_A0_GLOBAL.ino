@@ -4,7 +4,8 @@
 #include <Vector.h>
 #include <SD.h>
 #include<BMO_gfx.h>
-#include <TMRpcm.h>  
+#include <TMRpcm.h>
+#include <EEPROM.h>
 
 // TFT Breakout  -- Arduino Mega2560
 // GND              -- GND
@@ -37,7 +38,7 @@
 #define ORANGE 0xFF27
 
 MCUFRIEND_kbv tft;
-TMRpcm tmrpcm; 
+TMRpcm tmrpcm;
 
 
 //Adafruit_TFTLCD tft(LCD_CS, LCD_CD, LCD_WR, LCD_RD, LCD_RESET);
@@ -48,7 +49,7 @@ TMRpcm tmrpcm;
 //SD Card Files
 File file;
 
-  
+
 //GLOBAL CONSTANTS DEFINITIONS
 const int screenWidth = tft.height();
 const int screenHeight = tft.width();
@@ -96,13 +97,13 @@ bool isRunning = false;
 int score = 0;
 bool isPaused = false;
 
-//Game constants
-char* CRATE = "crate";
+//EEPROM constants
+const int musicEEPROM = 0;
 
 //-----------------------------------------
 //GLOBAL FUNCTION FOR CALCULATING DELTA TIME
 unsigned int oldTime = 0;
-unsigned int CalculateDeltaTime(){
+unsigned int CalculateDeltaTime() {
   int currentTime = millis();
   int deltaTime = currentTime - oldTime;
   oldTime = currentTime;

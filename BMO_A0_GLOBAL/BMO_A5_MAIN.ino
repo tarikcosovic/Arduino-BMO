@@ -17,7 +17,7 @@ MenuTitle option3("Highscores", 147, 120);
 MenuTitle option4("Music", 175, 155);
 
 MenuTitle optionMenu[4] {option1, option2, option3, option4};
-void (* selectMenuOption [4])() = {MainMenu, HighScoreMenu, HighScoreMenu, MusicMenu};
+void (* selectMenuOption [4])() = {MainMenu, OptionsMenu, HighScoreMenu, MusicMenu};
 
 void BMOMenu()
 {
@@ -66,7 +66,7 @@ void BMOMenu()
       if (transition)
         DrawText(optionMenu[currentOption].text, optionMenu[currentOption].x, optionMenu[currentOption].y, BLACK);
       else
-        DrawText(optionMenu[currentOption].text, optionMenu[currentOption].x, optionMenu[currentOption].y, WHITE);//0xE71C
+        DrawText(optionMenu[currentOption].text, optionMenu[currentOption].x, optionMenu[currentOption].y, CYAN);//0xE71C
       transition = !transition;
       menuTimer = 0;
     }
@@ -162,5 +162,5 @@ void SelectText(bool increment, int &currentOption)
   if (increment)
     currentOption++;
   else currentOption--;
-  DrawText(optionMenu[currentOption].text, optionMenu[currentOption].x, optionMenu[currentOption].y, 0xE71C);
+  DrawText(optionMenu[currentOption].text, optionMenu[currentOption].x, optionMenu[currentOption].y, CYAN);
 }
