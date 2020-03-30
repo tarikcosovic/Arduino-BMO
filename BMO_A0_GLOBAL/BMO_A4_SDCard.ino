@@ -1,5 +1,6 @@
 bool CheckForHighscore(String fileName, int score)
 {
+  tmrpcm.pause();
   file = SD.open(fileName + ".txt", FILE_READ);
 
   int highscores[5];
@@ -16,11 +17,12 @@ bool CheckForHighscore(String fileName, int score)
       counter++;
     }
     file.close();
-  }else {
+    tmrpcm.pause();
+  } else {
     Serial.println("Could not open file (writing).");
   }
-    if (score > highscores[4])
-      return true;
+  if (score > highscores[4])
+    return true;
   return false;
 }
 
@@ -31,6 +33,7 @@ bool SaveHighscoreToSDCard(String fileName, String username, int score)
     while (username.length() != 5)
       username += " ";
 
+  tmrpcm.pause();
   file = SD.open(fileName + ".txt", FILE_READ);
 
   int highscores[5];
@@ -96,11 +99,13 @@ bool SaveHighscoreToSDCard(String fileName, String username, int score)
   } else {
     Serial.println("Could not open file (writing).");
   }
+  tmrpcm.pause();
   return newHighscore;
 }
 
 String GetHighscores(String fileName)
 {
+  tmrpcm.pause();
   file = SD.open(fileName + ".txt", FILE_READ);
 
   String highscoreList;
@@ -119,5 +124,6 @@ String GetHighscores(String fileName)
   else
     Serial.println("Could not open file (reading).");
 
+  tmrpcm.pause();
   return highscoreList;
 }

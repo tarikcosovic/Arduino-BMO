@@ -27,18 +27,18 @@ void DrawMusicVolume(int temp)
   tft.fillRect(130, 70, 140, 20, BLACK);
 
   tft.drawRect(129, 69, 142, 22, WHITE);
-  tft.fillRect(130, 70, (temp * 20), 20, YELLOW);
+  tft.fillRect(130, 70, ( (1+temp) * 20), 20, YELLOW);
 }
 
 void CheckOptionAnalog(String temp, int &musicValue)
 {
-  if (temp == RIGHT && musicValue < 7)
+  if (temp == RIGHT && musicValue < 6)
   {
     musicValue++;
     EEPROM.write(musicEEPROM, musicValue);
     tmrpcm.setVolume(musicValue);
   }
-  else if (temp == LEFT && musicValue > 0)
+  else if (temp == LEFT && musicValue >= 0)
   {
     musicValue--;
     EEPROM.write(musicEEPROM, musicValue);

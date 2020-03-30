@@ -7,6 +7,7 @@ void setup(void) {
 
   InitiateSDCard();
   tmrpcm.speakerPin = Speaker_SFX;
+  InitiateMusisPrefs();
 
   //BUTTON PINS
   pinMode(RedButton, INPUT);     //LeftButton
@@ -16,7 +17,7 @@ void setup(void) {
   g_identifier = tft.readID(); //0x9327
   tft.begin(g_identifier);
   tft.setRotation(1); //Sets the screen rotation to horizontal
-  
+
   //StartupConsole();
   BMOMenu();
 }
@@ -28,4 +29,14 @@ void InitiateSDCard()
   if (!SD.begin(MicroSDPin)) { // Initialize SD card
     Serial.println("Could not initialize SD card."); // if return value is false, something went wrong.
   }
+}
+
+void InitiateMusisPrefs()
+{
+  int musicValue = EEPROM.read(musicEEPROM);
+  if (musicValue == 255)
+    musicValue = 2;
+
+  tmrpcm.setVolume(musicValue);
+  tmrpcm.loop(1);
 }

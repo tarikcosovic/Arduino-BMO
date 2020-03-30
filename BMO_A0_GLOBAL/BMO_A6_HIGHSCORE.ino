@@ -14,7 +14,7 @@ void HighScoreMenu()
 
   for (int i = 0; i < 80; i++)
   {
-    if(i < 40)stars[i].positionX = random(0, 110);
+    if (i < 40)stars[i].positionX = random(0, 110);
     else  stars[i].positionX = random(290, 400);
     stars[i].positionY = random(0, screenHeight);
   }
@@ -28,7 +28,7 @@ void HighScoreMenu()
   while (isRunning)
   {
     lastFrameTime = CalculateDeltaTime();
-    
+
     timer += lastFrameTime;
 
     String tempVal = CheckAnalogInputs();
@@ -75,7 +75,6 @@ void DrawTrianglesHighscore(uint16_t color)
 void LoadHighscore(String fileName, String gameName)
 {
   tft.fillScreen(BLACK);
-
   String highscores = GetHighscores(fileName);
   int YPosition = 70;
 
