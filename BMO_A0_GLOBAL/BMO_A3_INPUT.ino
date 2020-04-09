@@ -1,6 +1,6 @@
 //Array of function pointers for the game select UI
 void (* gameSelectUI [3])(String) = {StarWarsUI, TheMatrixUI, SnakeUI};
-void (* gameSelectStart [3])() = {StartInvaders, TheMatrixUI, StartSnake};
+void (* gameSelectStart [3])() = {StartInvaders, StartPacman, StartSnake};
 int currentGameUI = 0;
 
 String CheckAnalogInputs()

@@ -27,6 +27,8 @@
 
 //Color Definitions
 #define BLACK   0x0000
+#define LIGHTBLACK 0x2104
+#define LIGHTBLACK2 0x2945
 #define BLUE    0x001F
 #define RED     0xF800
 #define GREEN   0x07E0
