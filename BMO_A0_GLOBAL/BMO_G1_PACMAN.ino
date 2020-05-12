@@ -1,10 +1,313 @@
+//BITMAPS
+const unsigned char deathBlock[] PROGMEM = {
+  B00000000, B00000000, B00000000,
+  B00000000, B00000000, B00000000,
+  B00000000, B00000000, B00000000,
+  B00000011, B11100000, B00000000,
+  B00001111, B11111000, B00000000,
+  B00011111, B11111100, B00000000,
+  B00011111, B11111100, B00000000,
+  B00011110, B01100100, B00000000,
+  B00011110, B01100100, B00000000,
+  B00001111, B11111100, B00000000,
+  B00000000, B11111000, B00000000,
+  B00000110, B10101000, B00000000,
+  B00000110, B01010000, B00000000,
+  B00000111, B11111000, B00000000,
+  B00000011, B11110000, B00000000,
+  B00000000, B00000000, B00000000,
+  B00000000, B00000000, B00000000,
+  B00000000, B00000000, B00000000
+};
+
+const unsigned char grass_01[] PROGMEM = {
+  B00000000, B00000000, B00000000,
+  B01000000, B01000000, B00000000,
+  B01100000, B11000010, B00000000,
+  B00100000, B10000110, B00000000,
+  B00000000, B00000100, B00000000,
+  B00000100, B00010000, B00000000,
+  B00000110, B00011000, B00000000,
+  B00100010, B00001000, B00000000,
+  B01100000, B00100000, B00000000,
+  B01000000, B01100100, B00000000,
+  B00000000, B01000110, B00000000,
+  B00000010, B00000010, B00000000,
+  B01000011, B00001000, B00000000,
+  B01100001, B00011000, B00000000,
+  B00100000, B00010000, B00000000,
+  B00000000, B00000000, B00000000,
+  B00000000, B00000000, B00000000
+};
+
+const unsigned char grass_02[] PROGMEM = {
+  B00000000, B00000000, B00000000,
+  B00000001, B10000000, B00000000,
+  B00000011, B11000000, B00000000,
+  B00000011, B11000000, B00000000,
+  B00000011, B11011000, B00000000,
+  B00000011, B11011000, B00000000,
+  B00000011, B11011000, B00000000,
+  B00011011, B11011000, B00000000,
+  B00011011, B11111000, B00000000,
+  B00011011, B11110000, B00000000,
+  B00011011, B11000000, B00000000,
+  B00011111, B11000000, B00000000,
+  B00001111, B11000000, B00000000,
+  B00000011, B11000000, B00000000,
+  B00000011, B11000000, B00000000,
+  B00000000, B00000000, B00000000,
+  B00000000, B00000000, B00000000
+};
+
+const unsigned char grass_03[] PROGMEM = {
+  B00000000, B00000000, B00000000,
+  B00000001, B10000000, B00000000,
+  B00000001, B10000000, B00000000,
+  B00000011, B11000000, B00000000,
+  B00000011, B11000000, B00000000,
+  B00000111, B11100000, B00000000,
+  B00000011, B11000000, B00000000,
+  B00000100, B00100000, B00000000,
+  B00001111, B11110000, B00000000,
+  B00000111, B11100000, B00000000,
+  B00011000, B00011000, B00000000,
+  B00011111, B11111000, B00000000,
+  B00001111, B11110000, B00000000,
+  B00000000, B00000000, B00000000,
+  B00000001, B10000000, B00000000,
+  B00000000, B00000000, B00000000,
+  B00000000, B00000000, B00000000
+};
+
+const unsigned char grass_04[] PROGMEM = {
+  B00000000, B00000000, B00000000,
+  B00000000, B00010000, B00000000,
+  B00000000, B00111000, B00000000,
+  B00000000, B01111100, B00000000,
+  B00001000, B01111100, B00000000,
+  B00011100, B11111110, B00000000,
+  B00111110, B11111110, B00000000,
+  B00111110, B11111110, B00000000,
+  B01111111, B01111110, B00000000,
+  B01111111, B01111110, B00000000,
+  B01111111, B01111110, B00000000,
+  B01111111, B01111100, B00000000,
+  B00111110, B00000000, B00000000,
+  B00000000, B00010000, B00000000,
+  B00001000, B00000000, B00000000,
+  B00000000, B00000000, B00000000,
+  B00000000, B00000000, B00000000
+};
+const unsigned char grass_05[] PROGMEM = {
+  B00000000, B00000000, B00000000,
+  B00000000, B00000000, B00000000,
+  B00000000, B00110000, B00000000,
+  B00000000, B00110000, B00000000,
+  B00001100, B10110000, B00000000,
+  B00001100, B10110100, B00000000,
+  B00001100, B01110100, B00000000,
+  B00001100, B00111000, B00000000,
+  B00001101, B00110000, B00000000,
+  B00101101, B00110000, B00000000,
+  B00101110, B00000000, B00000000,
+  B00101100, B00000000, B00000000,
+  B00011100, B00000000, B00000000,
+  B00001100, B00000000, B00000000,
+  B00000000, B00000000, B00000000,
+  B00000000, B00000000, B00000000,
+  B00000000, B00000000, B00000000
+};
+
+const unsigned char grass_06[] PROGMEM = {
+  B00000000, B00000000, B00000000,
+  B00000000, B00100000, B00000000,
+  B00001000, B00110010, B00000000,
+  B00101010, B00010110, B00000000,
+  B00000000, B00000100, B00000000,
+  B00000000, B00000000, B00000000,
+  B00000000, B00000000, B00000000,
+  B00000000, B00000000, B00000000,
+  B00000100, B00001000, B00000000,
+  B01001100, B00101010, B00000000,
+  B01101000, B00000000, B00000000,
+  B00100000, B00000000, B00000000,
+  B00000000, B00000000, B00000000,
+  B00000001, B00000000, B00000000,
+  B00000101, B01000000, B00000000,
+  B00000000, B00000000, B00000000,
+  B00000000, B00000000, B00000000
+};
+
+const unsigned char grass_07[] PROGMEM = {
+  B00000000, B00000000, B00000000,
+  B00000000, B00000000, B00000000,
+  B00000000, B00000000, B00000000,
+  B00000000, B10000000, B00000000,
+  B00001001, B00000000, B00000000,
+  B00000101, B00000000, B00000000,
+  B00000110, B00010000, B00000000,
+  B00000010, B10100000, B00000000,
+  B00000010, B01100000, B00000000,
+  B00010010, B01001000, B00000000,
+  B00001010, B01010000, B00000000,
+  B00101010, B01010000, B00000000,
+  B00001010, B01010100, B00000000,
+  B00000010, B01010000, B00000000,
+  B00000000, B01000000, B00000000,
+  B00000000, B00000000, B00000000,
+  B00000000, B00000000, B00000000
+};
+
+const unsigned char *grass[7] = {grass_07, grass_02, grass_03, grass_04, grass_05, grass_06, grass_07};
+
+const unsigned char dirt_01[] PROGMEM = {
+  B00000000, B00000000, B00000000,
+  B00000001, B00000000, B00000000,
+  B00000101, B01000000, B00000000,
+  B00100000, B00000010, B00000000,
+  B00110000, B00000000, B00000000,
+  B00010001, B10001100, B00000000,
+  B00000001, B11011100, B00000000,
+  B00000000, B11011000, B00000000,
+  B01000000, B01010000, B00000000,
+  B00000000, B00000000, B00000000,
+  B00000010, B00000000, B00000000,
+  B00100110, B00000000, B00000000,
+  B00110100, B00001000, B00000000,
+  B00010000, B00001100, B00000000,
+  B00000000, B10000100, B00000000,
+  B00000000, B00000000, B00000000,
+  B00000000, B00000000, B00000000
+};
+
+const unsigned char dirt_02[] PROGMEM = {
+  B00000000, B00000000, B00000000,
+  B01000001, B00000100, B00000000,
+  B00001100, B01110000, B00000000,
+  B00101100, B01110010, B00000000,
+  B00000000, B01110000, B00000000,
+  B00001011, B00000000, B00000000,
+  B01100011, B00100110, B00000000,
+  B01100000, B00000110, B00000000,
+  B00001110, B01100000, B00000000,
+  B00001110, B01101000, B00000000,
+  B01001110, B00000000, B00000000,
+  B00000000, B01000010, B00000000,
+  B00111000, B00011000, B00000000,
+  B00111000, B10011000, B00000000,
+  B00111000, B00000000, B00000000,
+  B00000000, B00000000, B00000000,
+  B00000000, B00000000, B00000000
+};
+
+const unsigned char dirt_03[] PROGMEM = {
+  B00000000, B00000000, B00000000,
+  B00000000, B10000000, B00000000,
+  B00001000, B00000000, B00000000,
+  B00000011, B10110000, B00000000,
+  B00011011, B10110100, B00000000,
+  B00011011, B10000000, B00000000,
+  B00000000, B00111000, B00000000,
+  B01011101, B10111000, B00000000,
+  B00011101, B10111010, B00000000,
+  B00011100, B00000000, B00000000,
+  B00000001, B11011000, B00000000,
+  B00101101, B11011000, B00000000,
+  B00001101, B11000000, B00000000,
+  B00000000, B00010000, B00000000,
+  B00000001, B00000000, B00000000,
+  B00000000, B00000000, B00000000,
+  B00000000, B00000000, B00000000
+};
+const unsigned char dirt_04[] PROGMEM = {
+  B00000000, B00000000, B00000000,
+  B00001000, B00100000, B00000000,
+  B00000011, B10000000, B00000000,
+  B00011011, B10111000, B00000000,
+  B00011011, B10111010, B00000000,
+  B01011011, B10000000, B00000000,
+  B00000000, B00111100, B00000000,
+  B00111101, B10111100, B00000000,
+  B00111101, B10111100, B00000000,
+  B00111100, B00000000, B00000000,
+  B00000001, B11011010, B00000000,
+  B01011101, B11011000, B00000000,
+  B00011101, B11011000, B00000000,
+  B00000001, B11000000, B00000000,
+  B00000100, B00010000, B00000000,
+  B00000000, B00000000, B00000000,
+  B00000000, B00000000, B00000000
+};
+
+const unsigned char dirt_05[] PROGMEM = {
+  B00000000, B00000000, B00000000,
+  B00000000, B00000000, B00000000,
+  B00000000, B00000000, B00000000,
+  B00000000, B00000000, B00000000,
+  B00000000, B00000000, B00000000,
+  B00000000, B00000000, B00000000,
+  B00000000, B00000000, B00000000,
+  B00000000, B00100000, B00000000,
+  B00000000, B01000000, B00000000,
+  B00000010, B01000000, B00000000,
+  B00000001, B01000000, B00000000,
+  B00000001, B01001000, B00000000,
+  B00001001, B01010000, B00000000,
+  B00000101, B01010000, B00000000,
+  B00100101, B01010100, B00000000,
+  B00010101, B01010100, B00000000,
+  B00000000, B00000000, B00000000
+};
+
+const unsigned char dirt_06[] PROGMEM = {
+  B00000000, B00000000, B00000000,
+  B00100000, B00000000, B00000000,
+  B00100010, B00010000, B00000000,
+  B01110100, B10100100, B00000000,
+  B00111000, B01000100, B00000000,
+  B00011101, B00101110, B00000000,
+  B00101110, B00011100, B00000000,
+  B01000111, B00111000, B00000000,
+  B00001011, B11110000, B00000000,
+  B00000001, B11101010, B00000000,
+  B00101001, B11000100, B00000000,
+  B00011101, B10010010, B00000000,
+  B00000111, B10100000, B00000000,
+  B00001011, B11110000, B00000000,
+  B00000001, B11000000, B00000000,
+  B00000000, B00000000, B00000000,
+  B00000000, B00000000, B00000000
+};
+const unsigned char dirt_07[] PROGMEM = {
+  B00000000, B00000000, B00000000,
+  B00000000, B00000000, B00000000,
+  B00000000, B00000000, B00000000,
+  B00000011, B11000000, B00000000,
+  B00000100, B00100000, B00000000,
+  B00000011, B11000000, B00000000,
+  B00000101, B10100000, B00000000,
+  B00000111, B11100000, B00000000,
+  B00000011, B11000000, B00000000,
+  B00001000, B00010000, B00000000,
+  B00011111, B11111000, B00000000,
+  B00010111, B11101000, B00000000,
+  B00000000, B00000000, B00000000,
+  B00010111, B11101000, B00000000,
+  B00000100, B00100000, B00000000,
+  B00000000, B00000000, B00000000,
+  B00000000, B00000000, B00000000
+};
+
+const unsigned char *dirt[7] = {dirt_01, dirt_02, dirt_03, dirt_04, dirt_05, dirt_06, dirt_07};
+
 Grid* currentGrid;
 Grid* LoadLevel(int level)
 {
   delete currentGrid;
   currentGrid = NULL;
   Grid* gridLevel = new Grid();
-  if (level == 3)
+  if (level == 1)
   {
     GridTile** level_tiles = new (GridTile(*[3])) {
       new GridTile[3] {},
@@ -32,7 +335,7 @@ Grid* LoadLevel(int level)
     level_tiles[0][0].name = 'E';
     gridLevel->SetValues(4, 4, level_tiles);
   }
-  else if (level == 1)
+  else if (level == 3)
   {
     GridTile** level_tiles = new (GridTile(*[6])) {
       new GridTile[6] {},
@@ -64,20 +367,21 @@ int scallingFactorX = 20;
 int scallingFactorY = 20;
 
 int currentLevel = 1;
+const int gridBorderOffset = 3;
 void DrawGrid()
 {
-  tft.fillScreen(0xFFDD);
+  tft.fillScreen(DARKPURPLE);
 
   currentGrid = LoadLevel(currentLevel);
 
   int wallSize = 2;
-  uint16_t wallColor = 0xFFDD;
-  const int gridBorderOffset = 3;
+  uint16_t wallColor = DARKPURPLE;
 
   //Center grid on the x and x position of screen
   int startingPosX = (screenWidth / 2) - ((scallingFactorX * currentGrid->dimX) / 2);
   int posX = startingPosX;
   int posY = (screenHeight / 2) - ((scallingFactorY * currentGrid->dimY) / 2) - (currentGrid->dimY - 2) * gridBorderOffset;
+  DrawInitialEnvironment(posX, 25);
 
   //Setting the start pos of player visual
   playerGridPosX = (currentGrid->pX * scallingFactorX) + posX + (scallingFactorX / 2) + (currentGrid->pX * gridBorderOffset);
@@ -91,21 +395,27 @@ void DrawGrid()
     {
       if (currentGrid->gridTiles[i][j].isOpen)
       {
-        tft.fillRect(posX, posY, scallingFactorX, scallingFactorY, 0xD678);
+        //tft.fillRect(posX, posY, scallingFactorX, scallingFactorY, 0xD678);
+        tft.drawBitmap(posX, posY, dirt_02, 17, 17, DARKBROWN);
         delay(50);
 
         if (currentGrid->gridTiles[i][j].name == 'E')
-          interactableColor = 0x7E69;
-        else if (currentGrid->gridTiles[i][j].name == 'D')
-          interactableColor = 0xD286;
-        else if (currentGrid->gridTiles[i][j].name == 'P')
-          interactableColor = 0xF58E;
-        else if (isDigit(currentGrid->gridTiles[i][j].name))
-          interactableColor = MAGENTA;
-        else interactableColor = 0;
+        {
 
-        if (interactableColor != 0)
-          tft.fillRect(posX, posY, scallingFactorX, scallingFactorY, interactableColor);
+        }
+        else if (currentGrid->gridTiles[i][j].name == 'D')
+        {
+          tft.drawBitmap(posX + 2, posY, deathBlock, 18, 18, BLACK);
+        }
+        else if (currentGrid->gridTiles[i][j].name == 'P')
+        {
+          //POINTS
+        }
+        else if (isDigit(currentGrid->gridTiles[i][j].name))
+        {
+          //TELEPORT
+        }
+        //else tft.fillRect(posX, posY, scallingFactorX, scallingFactorY, BROWN);
       }
       else
       {
@@ -125,11 +435,11 @@ void DrawGrid()
   player.positionY = currentGrid->pY;
   currentGrid->gridTiles[player.positionY][player.positionX].isOpen = false;
   //--------------------------------------------------------------
-  UpdateScore(0);
+  //UpdateScore(0); UNCOMMENT WHEN YOU WANT TO SHOW TEXT
   UpdateGraphics();
 
   tft.setCursor(5, 20);
-  tft.print("Score:");
+  //tft.print("Score:"); UNCINNEBT WHEN YOU WANT TO SHOW TEXT
 }
 
 void StartPacman()
@@ -179,9 +489,9 @@ void CollisionCheck(int dir)
   {
     int tempX = player.positionX + dc[i];
     int tempY = player.positionY + dr[i];
-    if((tempX < 0 || tempX > currentGrid->dimX -1)|| (tempY < 0 || tempY > currentGrid->dimY -1))
+    if ((tempX < 0 || tempX > currentGrid->dimX - 1) || (tempY < 0 || tempY > currentGrid->dimY - 1))
       continue;
-    
+
     if (currentGrid->gridTiles[tempY][tempX].isOpen)
       isDeadEnd = false;
   }
@@ -199,8 +509,7 @@ void CollisionCheck(int dir)
 
   if (currentGrid->gridTiles[posY][posX].isOpen)
   {
-    if (!isdigit(currentGrid->gridTiles[posY][posX].name))
-      currentGrid->gridTiles[posY][posX].isOpen = false; //OVO MALO POGLEDATI
+    currentGrid->gridTiles[posY][posX].isOpen = false;
 
     //Changing player position and graphic position to next tile
     player.positionX += dc[dir];
@@ -244,7 +553,7 @@ void Teleport(GridTile temp)
         playerGridPosX -= offsetX;
         playerGridPosY -= offsetY;
 
-        //currentGrid->gridTiles[i][j].isOpen = false; PORADITI NA OVOM DA TP MOZEMO 2 PUTA AKTIVIRATI
+        currentGrid->gridTiles[i][j].isOpen = false;
         UpdateGraphics();
         return;
       }
@@ -256,11 +565,11 @@ void UpdateScore(int x)
 {
   tft.setTextSize(1);
 
-  tft.setTextColor(WHITE);
+  tft.setTextColor(DARKPURPLE);
   tft.setCursor(50, 20);
   tft.print(score);
   score += x;
-  tft.setTextColor(BLACK);
+  tft.setTextColor(YELLOW);
   tft.setCursor(50, 20);
   tft.print(score);
 }
@@ -298,5 +607,37 @@ void MovePlayer(int x1, int x2)
     UpdateGraphics();
     absY--;
     delay(2);
+  }
+}
+
+void DrawInitialEnvironment(int x, int y)
+{
+  int x1 = 0;
+  int y1 = 0;
+  int prefab = 0;
+  int randPrefab = 0;
+  for (int i = 0; i < 50; i++)
+  {
+    x1 = random(0, x - 10);
+    y1 = random(0, screenHeight - 10);
+
+    prefab = random(0, 7);
+
+    randPrefab = random(0, 10);
+    if (randPrefab > 3)
+      tft.drawBitmap(x1, y1, *(grass + prefab), 17, 17, GREEN);
+    else
+      tft.drawBitmap(x1, y1, *(dirt + prefab), 17, 17, DARKBROWN);
+
+    x1 = random(x + ((currentGrid->dimX * scallingFactorX) + (currentGrid->dimX * gridBorderOffset)), screenWidth - 17);
+    y1 = random(0, screenHeight - 10);
+
+    prefab = random(0, 7);
+
+    randPrefab = random(0, 10);
+    if (randPrefab > 3)
+      tft.drawBitmap(x1, y1, *(grass + prefab), 17, 17, GREEN);
+    else
+      tft.drawBitmap(x1, y1, *(dirt + prefab), 17, 17, DARKBROWN);
   }
 }

@@ -1,29 +1,14 @@
-#include <Adafruit_GFX.h>    // Core graphics library
-//#include <Adafruit_TFTLCD.h> // Hardware-specific library
+#include <Adafruit_GFX.h>
 #include <MCUFRIEND_kbv.h>
 #include <Vector.h>
 #include <SD.h>
-#include<BMO_gfx.h>
+#include <BMO_gfx.h>
 #include <TMRpcm.h>
 #include <EEPROM.h>
 
-// TFT Breakout  -- Arduino Mega2560
-// GND              -- GND
-// 3V3               -- 3.3V
-// CS                 -- A3
-// RS                 -- A2
-// WR                -- A1
-// RD                 -- A0
-// RST                -- RESET
-// LED                -- GND
-// DB0                -- 8
-// DB1                -- 9
-// DB2                -- 10
-// DB3                -- 11
-// DB4                -- 4
-// DB5                -- 13
-// DB6                -- 6
-// DB7                -- 7
+MCUFRIEND_kbv tft;
+TMRpcm tmrpcm;
+File file;
 
 //Color Definitions
 #define BLACK   0x0000
@@ -38,19 +23,8 @@
 #define WHITE   0xFFFF
 #define BROWN 0xEF17
 #define ORANGE 0xFF27
-
-MCUFRIEND_kbv tft;
-TMRpcm tmrpcm;
-
-
-//Adafruit_TFTLCD tft(LCD_CS, LCD_CD, LCD_WR, LCD_RD, LCD_RESET);
-// If using the shield, all control and data lines are fixed, and
-// a simpler declaration can optionally be used:
-// Adafruit_TFTLCD tft;
-
-//SD Card Files
-File file;
-
+#define DARKPURPLE 0x4167
+#define DARKBROWN 0x7A29
 
 //GLOBAL CONSTANTS DEFINITIONS
 const int screenWidth = tft.height();
@@ -59,9 +33,10 @@ const int screenHeight = tft.width();
 //SD Card-Adapter Pin
 const int MicroSDPin = 30;
 
-//BuzzerPin Sound Effects
-const int Buzzer_SFX = 28;
+//Speaker Sound Effects
 const int Speaker_SFX = 46;
+//BuzzerPin SFX
+const int Buzzer_SFX = 22;
 
 //ButtonPins and States
 const int YAxis = A8;
@@ -70,15 +45,14 @@ int YAxisValue = 0;
 const int XAxis = A9;
 int XAxisValue = 0;
 
-const int RedButton = 2;
+const int RedButton = 42;
 int RedButtonState = 0;
 
-const int BlueButton = 3;
+const int BlueButton = 44;
 int BlueButtonState = 0;
 
-const int WhiteButton = 44;
+const int WhiteButton = 40;
 int WhiteButtonState = 0;
-
 
 //Input Constants
 String LEFT = "left";
@@ -98,9 +72,11 @@ String INVADERS = "SPACE";
 bool isRunning = false;
 int score = 0;
 bool isPaused = false;
+bool sfxEnabled = true;
 
 //EEPROM constants
 const int musicEEPROM = 0;
+const int sfxEEPROM = 0;
 
 //-----------------------------------------
 //GLOBAL FUNCTION FOR CALCULATING DELTA TIME

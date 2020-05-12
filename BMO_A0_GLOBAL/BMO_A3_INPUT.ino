@@ -44,7 +44,7 @@ String CheckButtonInputs()
    else if (WhiteButtonState == HIGH)
   {
     return WHITEBUTTON;
-  }
+  }  
   return NONE;
 }
 

@@ -105,6 +105,10 @@ void MainMenuButtonCheck(String temp, bool &transitionAnimation)
 
     transitionAnimation = true;
   }
+  
+  if(temp != NONE)
+    ButtonPressSFX();
+  else ButtonSelectSFX();
 }
 
 void StarsMovementMainMenu(BodyPart stars[80], bool transitionAnimation, int currentOption)

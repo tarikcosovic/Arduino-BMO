@@ -1,6 +1,8 @@
 void StartupConsole()
 {
-  tmrpcm.play("INTRO.wav");
+  if(MusicEnabled())
+    tmrpcm.play("INTRO.wav");
+    
   tft.fillScreen(BLACK);
 
   tft.drawRect(130, 100, 150, 30, WHITE);
@@ -20,7 +22,7 @@ void StartupConsole()
     delay(500);
   }
 
-  DrawBMO();
+  BMOMenu();
 }
 
 void DrawDot(uint16_t color)
@@ -37,9 +39,10 @@ void DrawBMO()
   tft.fillCircle(260, 60, 8, BLACK);
   tft.drawCircle(200, 100, 30, BLACK);
   tft.fillRect(170, 70, 60, 30, 0xCFBA);
+  delay(2000);
 }
 
 void loop(void)
 {
-  tft.fillScreen(YELLOW);
+
 }

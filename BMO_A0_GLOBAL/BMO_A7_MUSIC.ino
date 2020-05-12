@@ -84,10 +84,12 @@ void MusicEventLoop()
 
 void CheckMusicButtons(String temp)
 {
+  
   tft.setTextSize(1);
   String playingSong;
-  if (temp == BLUEBUTTON)
+  if (temp == BLUEBUTTON && MusicEnabled())
   {
+    ButtonPressSFX();
     if (currentlyPlayingSong == currentSong)
     {
       tmrpcm.pause();
@@ -113,6 +115,7 @@ void CheckMusicButtons(String temp)
   }
   else if (temp == REDBUTTON)
   {
+    EscapeSFX_v1();
     //UGASITI MUZIKU I UPALITI DEFAULT
     BMOMenu();
   }
@@ -175,4 +178,9 @@ void DrawButtonsMusic()
   tft.setTextSize(1);
   tft.setTextColor(YELLOW);
   tft.print("Playing: ");
+}
+
+bool MusicEnabled()
+{
+  return EEPROM.read(musicEEPROM) > 0;
 }

@@ -1,11 +1,32 @@
+BodyPart horizon(0, 140);
+
 void StartTopGun()
 {
   DrawInitialHud();
 
+  unsigned int movementSpeed = 0;
+  unsigned int deltaTime = 0;
+  String input;
   isRunning = true;
   while (isRunning)
   {
+    deltaTime = CalculateDeltaTime();
+    movementSpeed += deltaTime;
 
+    input = CheckAnalogInputs();
+    if (movementSpeed % 10 == 0)
+    {
+      if (input == UP || input == DOWN)
+        Move(input);
+      else if (input == NONE && horizon.positionX == 0)ReCalculateHorizon();
+
+      movementSpeed = 0;
+    }
+    if (input == LEFT || input == RIGHT)
+      MoveSideways(input);
+    else ReCalculateSideways();
+
+    DrawCrosshair();
   }
 }
 
@@ -14,8 +35,8 @@ void DrawInitialHud()
   //Colors: HUD Red - 0xEC0C, HUD Darker Red - 0xEAA5, HUD BG Green - 0x2B20, HUD FG Green - 0x86AC, Sky Blue - 0xB73F, Ocean Blue - 0x037E
   tft.fillScreen(BLACK);
   tft.fillRect(0, 0, 400, 140, 0xB73F);
-  tft.fillRect(0, 100, 400, 40, 0x037E);
-  tft.drawLine(0, 140, 400, 140, 0xEC0C);
+  // tft.fillRect(0, 100, 400, 40, 0x037E);
+  // tft.drawLine(0, 140, 400, 140, 0xEC0C);
 
   //DRAWING UPPER RIGHT-LEFT RED BORDERS
   int tempVal = 140;
@@ -120,4 +141,81 @@ void DrawInitialHud()
   tft.drawCircle(345, 215, 12, 0xEC0C);
   //-------------------
 
+}
+
+void Move(String input)
+{
+  if (input == UP && horizon.positionY <= 140)
+  {
+    tft.drawLine(0, horizon.positionY, 400, horizon.positionY, 0xB73F);
+    horizon.positionY++;
+  }
+  else if (input == DOWN && horizon.positionY >= 0)
+  {
+    tft.drawLine(0, horizon.positionY, 400, horizon.positionY, 0x037E);
+    horizon.positionY--;
+  }
+}
+
+void MoveSideways(String input)
+{
+  if (horizon.positionY > 100)return;
+
+  if (input == LEFT && horizon.positionX > -30)
+  { //Using the X position of horizon as left and right Y variable [-b, +b]
+    //If it is on right side going left will automaticaly switch to 0
+    if (horizon.positionX > 0)
+      ResetSideways();
+
+    tft.drawLine(0, horizon.positionY, 400, horizon.positionY - horizon.positionX, 0xB73F);
+    horizon.positionX--;
+  }
+  else if (input == RIGHT && horizon.positionX < 30)
+  {
+    if (horizon.positionX < 0)
+      ResetSideways();
+
+    tft.drawLine(400, horizon.positionY, 0, horizon.positionY + horizon.positionX, 0xB73F);
+    horizon.positionX++;
+  }
+}
+
+void ReCalculateHorizon()
+{
+  if (horizon.positionY > 80)
+  {
+    tft.drawLine(0, horizon.positionY, 400, horizon.positionY, 0x037E);
+    horizon.positionY--;
+  }
+  else if (horizon.positionY < 80)
+  {
+    tft.drawLine(0, horizon.positionY, 400, horizon.positionY, 0xB73F);
+    horizon.positionY++;
+  }
+}
+
+void ReCalculateSideways()
+{
+  if (horizon.positionX < 0)
+  {
+    tft.drawLine(0, horizon.positionY, 400, horizon.positionY - horizon.positionX, 0x037E);
+    horizon.positionX++;
+  }
+  else if (horizon.positionX > 0)
+  {
+    tft.drawLine(400, horizon.positionY, 0, horizon.positionY + horizon.positionX, 0x037E);
+    horizon.positionX--;
+  }
+}
+
+void ResetSideways()
+{
+  tft.fillRect(0, horizon.positionY, 400, abs(horizon.positionX) + 1, 0x037E);
+  horizon.positionX = 0;
+}
+
+void DrawCrosshair()
+{
+  tft.fillRect(screenWidth / 2 - 4, 90, 9, 1, BLACK);
+  tft.fillRect(screenWidth / 2, 86, 1, 9, BLACK);
 }

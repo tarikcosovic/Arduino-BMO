@@ -73,12 +73,22 @@ void MainMenuInput()
   String buttonPressed = CheckAnalogInputs();
 
   String gameSelected = CheckButtonInputs();
-  if(gameSelected == REDBUTTON)
+  if (gameSelected == REDBUTTON)
+  {
+    EscapeSFX_v1();
     BMOMenu();
+  }
   else if (gameSelected != NONE)
+  {
+    ButtonPressSFX();
     gameSelectStart[currentGameUI]();
-  else
+  }
+
+  if (buttonPressed != NONE)
+  {
+    ButtonSelectSFX();
     CalculateCurrentGameUI(buttonPressed);
+  }
 }
 
 //------------------------------------

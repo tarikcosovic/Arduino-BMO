@@ -265,6 +265,8 @@ void DrawBulletInvaders()
     playerBullet.x = playerShip.x;
     playerBullet.y = playerShip.y - 4;
     isFiring = true;
+
+    ShootSFX_v1();
   }
   tft.fillRect(playerBullet.x + 2, playerBullet.y, 2, 6, BLACK);
   playerBullet.y --;
@@ -296,6 +298,7 @@ void CheckBulletCollision()
         tft.fillRect(playerBullet.x + 2, playerBullet.y, 2, 6, BLACK);
 
         enemyShips[i].Erase(j);
+        DeathSFX_v1();
 
         isFiring = false;
         UpdateScoreInvaders();
