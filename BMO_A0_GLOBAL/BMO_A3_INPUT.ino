@@ -1,5 +1,5 @@
 //Array of function pointers for the game select UI
-void (* gameSelectUI [3])(String) = {StarWarsUI, TheMatrixUI, SnakeUI};
+void (* gameSelectUI [3])() = {StarWarsUI, TheMatrixUI, SnakeUI};
 void (* gameSelectStart [3])() = {StartInvaders, StartPacman, StartSnake};
 int currentGameUI = 0;
 
@@ -16,11 +16,11 @@ String CheckAnalogInputs()
   {
     return LEFT;
   }
-   else if (YAxisValue < 300)
+  else if (YAxisValue < 300)
   {
     return UP;
   }
-   else if (YAxisValue > 700)
+  else if (YAxisValue > 700)
   {
     return DOWN;
   }
@@ -41,10 +41,10 @@ String CheckButtonInputs()
   {
     return BLUEBUTTON;
   }
-   else if (WhiteButtonState == HIGH)
+  else if (WhiteButtonState == HIGH)
   {
     return WHITEBUTTON;
-  }  
+  }
   return NONE;
 }
 
@@ -73,6 +73,9 @@ void CalculateCurrentGameUI(String swipeDirection)
       currentGameUI++;
     }
   }
-  if(swipeDirection == LEFT || swipeDirection == RIGHT)
-    gameSelectUI[currentGameUI](swipeDirection);
+  if (swipeDirection == LEFT || swipeDirection == RIGHT)
+  {
+    currentEventArgs.swipeDirection = swipeDirection;
+    currentEvent = gameSelectUI[currentGameUI];
+  }
 }

@@ -65,7 +65,9 @@ void StartSnake()
     }
   }
 
-  GameOver(SNAKE, score);
+  currentEvent = &GameOver;
+  currentEventArgs.fileName = SNAKE;
+  currentEventArgs.score = score;
 }
 
 
@@ -169,7 +171,10 @@ void ButtunInputsSnake(String temp)
     delay(500);
   }
   else if (temp == REDBUTTON)
-    gameSelectUI[currentGameUI]("LEFT");
+  {
+    currentEvent = gameSelectUI[currentGameUI];
+    currentEventArgs.swipeDirection = LEFT;
+  }
 }
 
 void RefreshDisplay(Vector<BodyPart> &Snake)
@@ -179,6 +184,7 @@ void RefreshDisplay(Vector<BodyPart> &Snake)
 
 void UpdateScore()
 {
+   //Serial.println(freeMemory());
   //Delete old score
   tft.setTextColor(BLACK);
   tft.setCursor(SnakeBorderOffset, 5);

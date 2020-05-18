@@ -5,6 +5,7 @@
 #include <BMO_gfx.h>
 #include <TMRpcm.h>
 #include <EEPROM.h>
+#include <MemoryFree.h>
 
 MCUFRIEND_kbv tft;
 TMRpcm tmrpcm;
@@ -69,6 +70,23 @@ String SNAKE = "SNAKE";
 String INVADERS = "SPACE";
 
 //Global settings
+struct EventArgs{
+
+  //Game Menu
+  String swipeDirection;
+
+  //GameOver Menu
+  String fileName;
+  int score;
+  
+  EventArgs(){}
+  
+};
+EventArgs currentEventArgs;
+
+typedef void (*event)();
+event currentEvent;
+
 bool isRunning = false;
 int score = 0;
 bool isPaused = false;

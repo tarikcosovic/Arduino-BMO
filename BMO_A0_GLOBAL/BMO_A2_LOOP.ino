@@ -1,8 +1,8 @@
 void StartupConsole()
 {
-  if(MusicEnabled())
+  if (MusicEnabled())
     tmrpcm.play("INTRO.wav");
-    
+
   tft.fillScreen(BLACK);
 
   tft.drawRect(130, 100, 150, 30, WHITE);
@@ -22,7 +22,7 @@ void StartupConsole()
     delay(500);
   }
 
-  BMOMenu();
+  currentEvent = &BMOMenu;
 }
 
 void DrawDot(uint16_t color)
@@ -44,5 +44,8 @@ void DrawBMO()
 
 void loop(void)
 {
+  Serial.println("EVENT HANDLER <---");
 
+  if(currentEvent != NULL)
+    currentEvent();
 }

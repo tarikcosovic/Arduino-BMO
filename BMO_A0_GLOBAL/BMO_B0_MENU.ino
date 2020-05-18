@@ -1,6 +1,7 @@
 void MainMenu()
 {
-  gameSelectUI[currentGameUI]("none");
+  currentEvent = gameSelectUI[currentGameUI];
+  currentEventArgs.swipeDirection = "none";
 }
 
 //---------------------------------
@@ -41,8 +42,10 @@ void PressAnyButtonUI(uint16_t color)
 
   tft.setTextSize(1);
 
+  isRunning = true;
+
   unsigned int counter = 0;
-  while (true)
+  while (isRunning)
   {
     MainMenuInput();
 
@@ -76,17 +79,20 @@ void MainMenuInput()
   if (gameSelected == REDBUTTON)
   {
     EscapeSFX_v1();
-    BMOMenu();
+    isRunning = false;
+    currentEvent = &BMOMenu;
   }
   else if (gameSelected != NONE)
   {
     ButtonPressSFX();
-    gameSelectStart[currentGameUI]();
+    isRunning = false;
+    currentEvent = gameSelectStart[currentGameUI];
   }
 
   if (buttonPressed != NONE)
   {
     ButtonSelectSFX();
+    isRunning = false;
     CalculateCurrentGameUI(buttonPressed);
   }
 }
@@ -94,8 +100,9 @@ void MainMenuInput()
 //------------------------------------
 //GAME TITLE: STAR WARS
 //GAME SUBTITLE: THE RETURN OF THE JEDI
-void StarWarsUI(String swipeDirection)
+void StarWarsUI()
 {
+  String swipeDirection = currentEventArgs.swipeDirection;
   GameTitleUI(screenWidth / 2 - 80, screenHeight / 2 - 50, screenWidth / 2 - 150, screenHeight / 2 - 20, "Space Invaders", "The Arcade Legend Returns", YELLOW, swipeDirection);
 
   for (int i = 0; i < 80; i++) {
@@ -111,8 +118,9 @@ void StarWarsUI(String swipeDirection)
 //------------------------------------
 //GAME TITLE: THE MATRIX
 //GAME SUBTITLE: DEEP DIVE INTO REALITY
-void TheMatrixUI(String swipeDirection)
+void TheMatrixUI()
 {
+  String swipeDirection = currentEventArgs.swipeDirection;
   GameTitleUI(screenWidth / 2 - 50, screenHeight / 2 - 40, screenWidth / 2 - 125, screenHeight / 2 - 20, "The Matrix", "Deep dive into reality", GREEN, swipeDirection);
 
   tft.setTextSize(0);
@@ -148,8 +156,9 @@ void TheMatrixUI(String swipeDirection)
 //------------------------------------
 //GAME TITLE: SNAKE
 //GAME SUBTITLE: 80s' retro classic
-void SnakeUI(String swipeDirection)
+void SnakeUI()
 {
+  String swipeDirection = currentEventArgs.swipeDirection;
   GameTitleUI(screenWidth / 2 -  18, screenHeight / 2 - 65 , screenWidth / 2 - 68, screenHeight / 2 - 40, "Snake", "Retro classic", MAGENTA, swipeDirection);
 
   for (int i = 0; i < 40; i++) {

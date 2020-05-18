@@ -1,10 +1,14 @@
 //Calling the SaveHighscoreMethod   bool test = SaveHighscoreToSDCard("SNAKE", "kenny", 7);
 
-void GameOver(String fileName, int score)
+void GameOver()
 {
+  String fileName = currentEventArgs.fileName;
+  int score = currentEventArgs.score;
+
   String playerName;
   if (CheckForHighscore(fileName, score))
   {
+    NewHighscore_SFX();
     //If we have a highscore, the player has to enter his name
     playerName = EnterUsername();
     //Saving indicator
@@ -36,15 +40,21 @@ void GameOver(String fileName, int score)
       tft.setCursor(100, 160);
       tft.setTextColor(GREEN);
       tft.print("successfully saved!");
+      ButtonPressSFX();
     }
     else
     {
       tft.setCursor(120, 160);
       tft.setTextColor(RED);
       tft.print("Error saving!");
+      EscapeSFX_v1();
     }
   }
-  GameOverUI(fileName, score);
+  else
+  {
+    GameOver_v1();
+  }
+  currentEvent = &GameOverUI;
 }
 
 String EnterUsername()
@@ -114,11 +124,13 @@ String EnterUsername()
     if (input == LEFT && (int)letter > 65) {
       DrawLetter(BLACK, letterPosition, letter);
       letter--;
+      ButtonSelectSFX();
     }
     else if (input == RIGHT && (int)letter < 90)
     {
       DrawLetter(BLACK, letterPosition, letter);
       letter++;
+      ButtonSelectSFX();
     }
     else if (buttonInput == BLUEBUTTON && playerNameLength < 5)
     {
@@ -131,6 +143,8 @@ String EnterUsername()
 
       if (playerNameLength == 4) //if we add all 5 letters
         finishedPicking = true;
+
+      ButtonPressSFX();
     }
     else if (buttonInput == REDBUTTON && playerNameLength > 0 && playerNameLength < 6)
     {
@@ -147,7 +161,7 @@ String EnterUsername()
       playerName.remove(playerNameLength - 1);
 
       hasDeleted = true;
-
+      EscapeSFX_v1();
     }
 
     if (buttonInput == WHITEBUTTON && playerNameLength >= 1)
@@ -180,8 +194,11 @@ void DrawLetter(uint16_t color, int letterPosition, char letter)
   tft.print(letter);
 }
 
-void GameOverUI(String fileName, int score)
+void GameOverUI()
 {
+  String fileName = currentEventArgs.fileName;
+  int score = currentEventArgs.score;
+  
   tft.fillScreen(BLACK);
 
   for (int i = 0; i < 80; i++) {
@@ -252,9 +269,17 @@ void GameOverUI(String fileName, int score)
   }
 
   if (input == BLUEBUTTON)
-    gameSelectStart[currentGameUI]();
+  {
+    ButtonPressSFX();
+    isRunning = false;
+    currentEvent = gameSelectStart[currentGameUI];
+  }
   else if (input == REDBUTTON)
-    MainMenu();
+  {
+    EscapeSFX_v1();
+    isRunning = false;
+    currentEvent = &MainMenu;
+  }
 
 }
 

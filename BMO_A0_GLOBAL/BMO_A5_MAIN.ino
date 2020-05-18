@@ -90,7 +90,8 @@ void BMOMenu()
       tft.setRotation(3);
       tft.fillScreen(BLACK);
       tft.setRotation(1);
-      selectMenuOption[currentOption]();
+      inMenu = false;
+      currentEvent = selectMenuOption[currentOption];
     }
   }
 }

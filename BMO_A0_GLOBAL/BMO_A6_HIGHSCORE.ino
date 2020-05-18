@@ -38,7 +38,8 @@ void HighScoreMenu()
     if (tempVal2 == REDBUTTON)
     {
       EscapeSFX_v1();
-      BMOMenu();
+      isRunning = false;
+      currentEvent = &BMOMenu;
     }
 
     if (timer > 800)
@@ -56,7 +57,6 @@ void HighScoreMenu()
 void HighscoreAnalogInput(String temp, String files[2], String names[2], int &counter)
 {
   ButtonSelectSFX();
-
   if (temp == LEFT)counter--;
   else if (temp == RIGHT)counter++;
 

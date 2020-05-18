@@ -79,7 +79,7 @@ void StartInvaders()
     inputVal = CheckButtonInputs();
     if (inputVal == BLUEBUTTON && !isFiring)
       DrawBulletInvaders();
-    else if(inputVal != NONE)
+    else if (inputVal != NONE)
       ButtonsInvaders(inputVal);
     if (isPaused)continue;
 
@@ -121,7 +121,11 @@ void StartInvaders()
 
     }
   }
-  GameOver(INVADERS, score);
+
+  currentEventArgs.fileName = INVADERS;
+  currentEventArgs.score = score;
+
+  currentEvent = &GameOver;
 }
 
 void CreateEnemyShips()
@@ -438,5 +442,8 @@ void ButtonsInvaders(String temp)
     delay(500);
   }
   else if (temp == REDBUTTON)
-    gameSelectUI[currentGameUI]("LEFT");
+  {
+    currentEvent = gameSelectUI[currentGameUI];
+    currentEventArgs.swipeDirection = LEFT;
+  }
 }

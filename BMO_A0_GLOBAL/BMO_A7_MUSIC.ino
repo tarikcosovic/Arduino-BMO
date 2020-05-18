@@ -84,7 +84,7 @@ void MusicEventLoop()
 
 void CheckMusicButtons(String temp)
 {
-  
+
   tft.setTextSize(1);
   String playingSong;
   if (temp == BLUEBUTTON && MusicEnabled())
@@ -117,7 +117,8 @@ void CheckMusicButtons(String temp)
   {
     EscapeSFX_v1();
     //UGASITI MUZIKU I UPALITI DEFAULT
-    BMOMenu();
+    isRunning = false;
+    currentEvent = &BMOMenu;
   }
 
   delay(500);

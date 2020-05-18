@@ -32,7 +32,8 @@ void OptionsMenu()
     if (tempVal2 == REDBUTTON)
     {
       EscapeSFX_v1();
-      BMOMenu();
+      isRunning = false;
+      currentEvent = &BMOMenu;
     }
   }
 }

@@ -301,6 +301,90 @@ const unsigned char dirt_07[] PROGMEM = {
 
 const unsigned char *dirt[7] = {dirt_01, dirt_02, dirt_03, dirt_04, dirt_05, dirt_06, dirt_07};
 
+const unsigned char ghost[] PROGMEM = {
+  B00000000, B00000000, B00000000,
+  B00000011, B11000000, B00000000,
+  B00000111, B11100000, B00000000,
+  B00000111, B11100000, B00000000,
+  B00000101, B10100000, B00000000,
+  B00000111, B11100000, B00000000,
+  B00000010, B01000000, B00000000,
+  B00011110, B01111000, B00000000,
+  B00111111, B11111100, B00000000,
+  B00100111, B11100100, B00000000,
+  B00100111, B11100100, B00000000,
+  B00110111, B11101100, B00000000,
+  B00110011, B11001100, B00000000,
+  B00000011, B10000000, B00000000,
+  B00000001, B11000000, B00000000,
+  B00000000, B00000000, B00000000,
+  B00000000, B00000000, B00000000
+};
+
+const unsigned char flag[] PROGMEM = {
+  B00000000, B00000000, B00000000,
+  B01010011, B11000000, B00000000,
+  B00011111, B11110010, B00000000,
+  B01011111, B11111110, B00000000,
+  B00011111, B00111100, B00000000,
+  B01001100, B00000000, B00000000,
+  B01000000, B00000000, B00000000,
+  B01000000, B00000000, B00000000,
+  B01000000, B00000000, B00000000,
+  B01000000, B00000000, B00000000,
+  B01000000, B00000000, B00000000,
+  B01000000, B00000000, B00000000,
+  B01000000, B00000000, B00000000,
+  B01000000, B00000000, B00000000,
+  B01000000, B00000000, B00000000,
+  B00000000, B00000000, B00000000,
+  B00000000, B00000000, B00000000
+};
+
+const unsigned char money[] PROGMEM = {
+  B00000000, B00000000, B00000000,
+  B00000001, B10000000, B00000000,
+  B00000001, B10000000, B00000000,
+  B00000111, B11100000, B00000000,
+  B00001111, B11110000, B00000000,
+  B00001100, B00110000, B00000000,
+  B00001100, B00000000, B00000000,
+  B00001111, B11100000, B00000000,
+  B00000111, B11110000, B00000000,
+  B00000000, B00110000, B00000000,
+  B00001100, B00110000, B00000000,
+  B00001111, B11110000, B00000000,
+  B00000111, B11100000, B00000000,
+  B00000001, B10000000, B00000000,
+  B00000001, B10000000, B00000000,
+  B00000000, B00000000, B00000000,
+  B00000000, B00000000, B00000000
+};
+
+
+const unsigned char teleport[] PROGMEM = {
+  B00000000,B00000000,B00000000,
+  B00000000,B00000000,B00000000,
+  B00000010,B01000000,B00000000,
+  B00001001,B10010000,B00000000,
+  B00000001,B10000000,B00000000,
+  B00101101,B10110100,B00000000,
+  B00001110,B01110000,B00000000,
+  B00000111,B11100000,B00000000,
+  B00010001,B10001000,B00000000,
+  B00100101,B10100100,B00000000,
+  B00100011,B11000100,B00000000,
+  B00100001,B10000100,B00000000,
+  B00011000,B00011000,B00000000,
+  B00000111,B11100000,B00000000,
+  B00000000,B00000000,B00000000,
+  B00000000,B00000000,B00000000,
+  B00000000,B00000000,B00000000
+};
+
+
+
+
 Grid* currentGrid;
 Grid* LoadLevel(int level)
 {
@@ -367,10 +451,14 @@ int scallingFactorX = 20;
 int scallingFactorY = 20;
 
 int currentLevel = 1;
+bool isNextLevel = false;
 const int gridBorderOffset = 3;
 void DrawGrid()
 {
-  tft.fillScreen(DARKPURPLE);
+  tft.fillScreen(BLACK); // OR BLACK
+
+  for (int i = 0; i < 80; i++)
+    tft.fillRect(random(0, screenWidth), random(0, screenHeight), random(0, 4), random(0, 4), 0x2944);
 
   currentGrid = LoadLevel(currentLevel);
 
@@ -381,7 +469,7 @@ void DrawGrid()
   int startingPosX = (screenWidth / 2) - ((scallingFactorX * currentGrid->dimX) / 2);
   int posX = startingPosX;
   int posY = (screenHeight / 2) - ((scallingFactorY * currentGrid->dimY) / 2) - (currentGrid->dimY - 2) * gridBorderOffset;
-  DrawInitialEnvironment(posX, 25);
+  //DrawInitialEnvironment(posX, 25); UNCOMMENT IF YOU WANT TO DRAW BITMAPS!
 
   //Setting the start pos of player visual
   playerGridPosX = (currentGrid->pX * scallingFactorX) + posX + (scallingFactorX / 2) + (currentGrid->pX * gridBorderOffset);
@@ -395,31 +483,37 @@ void DrawGrid()
     {
       if (currentGrid->gridTiles[i][j].isOpen)
       {
-        //tft.fillRect(posX, posY, scallingFactorX, scallingFactorY, 0xD678);
-        tft.drawBitmap(posX, posY, dirt_02, 17, 17, DARKBROWN);
+        tft.fillRect(posX, posY, scallingFactorX, scallingFactorY, 0x4208);
         delay(50);
 
         if (currentGrid->gridTiles[i][j].name == 'E')
         {
-
+          //tft.fillRect(posX, posY, scallingFactorX, scallingFactorY, ORANGE);
+          tft.drawBitmap(posX + 2, posY, flag, 17, 17, ORANGE);
         }
         else if (currentGrid->gridTiles[i][j].name == 'D')
         {
-          tft.drawBitmap(posX + 2, posY, deathBlock, 18, 18, BLACK);
+          tft.fillRect(posX, posY, scallingFactorX, scallingFactorY, 0x4208);
+          tft.drawBitmap(posX + 2, posY, ghost, 17, 17, WHITE);
         }
         else if (currentGrid->gridTiles[i][j].name == 'P')
         {
           //POINTS
+          //tft.fillRect(posX, posY, scallingFactorX, scallingFactorY, YELLOW);
+          tft.drawBitmap(posX + 2, posY, money, 17, 17, GREEN);
         }
         else if (isDigit(currentGrid->gridTiles[i][j].name))
         {
           //TELEPORT
+          //tft.fillRect(posX, posY, scallingFactorX, scallingFactorY, MAGENTA);
+          tft.drawBitmap(posX + 2, posY, teleport, 17, 17, MAGENTA);
+
         }
-        //else tft.fillRect(posX, posY, scallingFactorX, scallingFactorY, BROWN);
+        //else tft.fillRect(posX, posY, scallingFactorX, scallingFactorY, BROWN); UNCOMMENT IF YOU WANT WALLS OR SOMETHING
       }
       else
       {
-        tft.fillRect(posX, posY, scallingFactorX, scallingFactorY, 0x8C0F);
+        //tft.fillRect(posX, posY, scallingFactorX, scallingFactorY, 0x8C0F);
         delay(50);
       }
       posX += scallingFactorX + gridBorderOffset;
@@ -435,11 +529,11 @@ void DrawGrid()
   player.positionY = currentGrid->pY;
   currentGrid->gridTiles[player.positionY][player.positionX].isOpen = false;
   //--------------------------------------------------------------
-  //UpdateScore(0); UNCOMMENT WHEN YOU WANT TO SHOW TEXT
+  UpdateScore(0);
   UpdateGraphics();
 
   tft.setCursor(5, 20);
-  //tft.print("Score:"); UNCINNEBT WHEN YOU WANT TO SHOW TEXT
+  tft.print("Score:");
 }
 
 void StartPacman()
@@ -518,14 +612,21 @@ void CollisionCheck(int dir)
 
     //Collision check for object-specific types
     CollisionCheckTile(currentGrid->gridTiles[posY][posX]);
-    CollisionCheck(dir);
+
+    if (!isNextLevel)
+      CollisionCheck(dir);
+    else
+    {
+      isNextLevel = false;
+      NextLevel();
+    }
   }
 }
 
 void CollisionCheckTile(GridTile temp)
 {
   if (temp.name == 'E')
-    NextLevel();
+    isNextLevel = true;
   else if (temp.name == 'D')
     isRunning = false;
   else if (temp.name == 'P')
@@ -565,7 +666,7 @@ void UpdateScore(int x)
 {
   tft.setTextSize(1);
 
-  tft.setTextColor(DARKPURPLE);
+  tft.setTextColor(BLACK);
   tft.setCursor(50, 20);
   tft.print(score);
   score += x;
@@ -577,11 +678,12 @@ void UpdateScore(int x)
 void NextLevel()
 {
   currentLevel++;
+  UpdateScore(currentLevel * 2);
   DrawGrid();
 }
 
 void UpdateGraphics() {
-  tft.fillCircle( playerGridPosX, playerGridPosY, 2, WHITE);
+  tft.fillCircle( playerGridPosX, playerGridPosY, 6, WHITE);
 }
 void MovePlayer(int x1, int x2)
 {

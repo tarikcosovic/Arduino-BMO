@@ -2,7 +2,7 @@ uint16_t g_identifier;
 
 void setup(void) {
 
-  //Serial.begin(9600); //For Debugging
+  Serial.begin(9600); //For Debugging
   randomSeed(analogRead(5));
 
   InitiateSDCard();
@@ -19,10 +19,9 @@ void setup(void) {
   tft.begin(g_identifier);
   tft.setRotation(1); //Sets the screen rotation to horizontal
 
-  //StartupConsole();
-  BMOMenu();
-  //StartPacman();
-  //StartTopGun();
+  //Serial.println(freeMemory());
+
+  currentEvent = &BMOMenu;
 }
 
 void InitiateSDCard()
@@ -46,7 +45,7 @@ void InitiateMusisPrefs()
 
   //Sound Effects
   int sfxValue = EEPROM.read(sfxEEPROM);
-  if(sfxEEPROM == 255)
+  if (sfxEEPROM == 255)
     sfxValue = 1;
   sfxEnabled = sfxValue;
 }
