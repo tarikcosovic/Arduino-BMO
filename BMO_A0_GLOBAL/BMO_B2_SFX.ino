@@ -65,3 +65,43 @@ void NewHighscore_SFX()
   delay(120);
   tone(Buzzer_SFX, 2093, 400);
 }
+
+void Collect_SFX()
+{
+  if (!sfxEnabled)
+    return;
+
+  tone(Buzzer_SFX, 2093, 50);
+}
+
+void GameCompleted_SFX()
+{
+  if (!sfxEnabled)
+    return;
+
+  tone(Buzzer_SFX, 2093, 30);
+  delay(50);
+  tone(Buzzer_SFX, 2093, 50);
+  delay(50);
+  tone(Buzzer_SFX, 2093, 50);
+
+
+  tone(Buzzer_SFX, 2093, 30);
+  delay(50);
+  tone(Buzzer_SFX, 2093, 50);
+  delay(50);
+  tone(Buzzer_SFX, 2093, 50); 
+  delay(50);
+  tone(Buzzer_SFX, 2093, 50);
+  delay(50);
+  tone(Buzzer_SFX, 2093, 50);
+  delay(50);
+
+  tone(Buzzer_SFX, 1024, 300);
+  delay(350);
+  tone(Buzzer_SFX, 523, 400);
+  delay(700);
+  tone(Buzzer_SFX, 523, 40);
+  delay(200);
+  tone(Buzzer_SFX, 2093, 700);
+}

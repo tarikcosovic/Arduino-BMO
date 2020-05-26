@@ -44,7 +44,8 @@ void DrawBMO()
 
 void loop(void)
 {
-  Serial.println("EVENT HANDLER <---");
+  //Serial.print("Current Memory:");
+  //Serial.println(freeMemory());
 
   if(currentEvent != NULL)
     currentEvent();

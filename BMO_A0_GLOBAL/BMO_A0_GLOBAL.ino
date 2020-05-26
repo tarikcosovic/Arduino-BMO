@@ -24,7 +24,6 @@ File file;
 #define WHITE   0xFFFF
 #define BROWN 0xEF17
 #define ORANGE 0xFF27
-#define DARKPURPLE 0x4167
 #define DARKBROWN 0x7A29
 
 //GLOBAL CONSTANTS DEFINITIONS
@@ -68,6 +67,7 @@ String NONE = "none";
 //FileName Constants
 String SNAKE = "SNAKE";
 String INVADERS = "SPACE";
+String WORMS = "WORMS";
 
 //Global settings
 struct EventArgs{

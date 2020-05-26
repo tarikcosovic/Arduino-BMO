@@ -1,5 +1,5 @@
-uint16_t currentColor[2] = {CYAN, MAGENTA};
-int currentPositionHighscore[2] = {115, 165};
+uint16_t currentColor[3] = {CYAN, MAGENTA, BROWN};
+int currentPositionHighscore[3] = {115, 165, 135};
 int counter = 1;
 String tempHighscores[5];
 
@@ -19,8 +19,8 @@ void HighScoreMenu()
     stars[i].positionY = random(0, screenHeight);
   }
 
-  String fileNames[2] = {INVADERS, SNAKE};
-  String gameNames[2] = {"Space Invaders", "Snake"};
+  String fileNames[3] = {INVADERS, SNAKE, WORMS};
+  String gameNames[3] = {"Space Invaders", "Snake", "Space Worms"};
 
   LoadHighscore(SNAKE, "Snake");
 
@@ -61,8 +61,8 @@ void HighscoreAnalogInput(String temp, String files[2], String names[2], int &co
   else if (temp == RIGHT)counter++;
 
   if (counter < 0)
-    counter = 1;
-  else if (counter > 1)
+    counter = 2;
+  else if (counter > 2)
     counter = 0;
 
   LoadHighscore(files[counter], names[counter]);

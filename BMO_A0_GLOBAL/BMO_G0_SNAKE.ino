@@ -43,7 +43,7 @@ void StartSnake()
 
     String tempVal2 = CheckButtonInputs();
     if (tempVal2 != NONE)
-      ButtunInputsSnake(tempVal2);
+      ButtonInputsSnake(tempVal2);
     if (isPaused)continue;
 
     if ((movementDirection == LEFT && tempVal == RIGHT) || (movementDirection == RIGHT && tempVal == LEFT) || (movementDirection == UP && tempVal == DOWN) || (movementDirection == DOWN && tempVal == UP))
@@ -121,7 +121,6 @@ restart:
 void UpdateSnakePositions(Vector<BodyPart> &Snake, bool eaten = false)
 {
   //Draws the tail of the snake black and new position white
-  //tft.drawPixel(Snake[Snake.Size() - 1].positionX, Snake[Snake.Size() - 1].positionY, BLACK);
   tft.drawRect(Snake[Snake.Size() - 1].positionX, Snake[Snake.Size() - 1].positionY, snakeScalingFactor, snakeScalingFactor, BLACK);
 
   for (int i = Snake.Size() - 1; i > 0; i--)
@@ -142,6 +141,7 @@ void UpdateSnakePositions(Vector<BodyPart> &Snake, bool eaten = false)
 
   if (eaten)
   {
+    Collect_SFX();
     BodyPart temp(Snake[Snake.Size() - 1].positionX, Snake[Snake.Size() - 1].positionY);
     Snake.PushBack(temp);
 
@@ -151,7 +151,7 @@ void UpdateSnakePositions(Vector<BodyPart> &Snake, bool eaten = false)
   }
 }
 
-void ButtunInputsSnake(String temp)
+void ButtonInputsSnake(String temp)
 {
   if (temp == WHITEBUTTON)
   {

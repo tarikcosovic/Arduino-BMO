@@ -121,7 +121,7 @@ void StarWarsUI()
 void TheMatrixUI()
 {
   String swipeDirection = currentEventArgs.swipeDirection;
-  GameTitleUI(screenWidth / 2 - 50, screenHeight / 2 - 40, screenWidth / 2 - 125, screenHeight / 2 - 20, "The Matrix", "Deep dive into reality", GREEN, swipeDirection);
+  GameTitleUI(screenWidth / 2 - 70, screenHeight / 2 - 50, screenWidth / 2 - 125, screenHeight / 2 - 20, "Space Worms", "Deluxe Puzzle Edition", RED, swipeDirection);
 
   tft.setTextSize(0);
   tft.setTextColor(0x0500);
